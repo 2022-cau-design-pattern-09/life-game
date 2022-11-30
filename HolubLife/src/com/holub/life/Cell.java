@@ -2,8 +2,6 @@ package com.holub.life;
 
 import java.awt.*;
 
-import com.holub.life.Storable;
-
 /***
  * This interface is the basic unit that comprises a life board.
  * It's implemented both by {@link Resident} (which represents

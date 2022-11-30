@@ -2,8 +2,9 @@
 
 package com.holub.tools;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.*;
-import java.io.*;
 
 /**
  * This class provides a single method that sets up logging for

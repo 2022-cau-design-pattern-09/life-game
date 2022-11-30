@@ -1,13 +1,13 @@
 package com.holub.life;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.util.*;
-import java.util.Timer;        // overrides java.awt.timer
-
-import com.holub.ui.MenuSite;
 import com.holub.tools.Publisher;
+import com.holub.ui.MenuSite;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /***
  * The <code>Clock</code> class handles the timing of gameboard

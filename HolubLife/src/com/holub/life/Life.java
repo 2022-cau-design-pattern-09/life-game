@@ -1,9 +1,9 @@
 package com.holub.life;
 
-import java.awt.*;
-import javax.swing.*;
-
 import com.holub.ui.MenuSite;
+
+import javax.swing.*;
+import java.awt.*;
 
 /*******************************************************************
  * An implemenation of Conway's Game of Life.
