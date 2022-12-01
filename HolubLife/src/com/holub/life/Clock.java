@@ -37,7 +37,7 @@ public class Clock {
     // are established.
     //
     private Clock() {
-        createMenus();
+        //createMenus();
     }
 
     private static Clock instance;
