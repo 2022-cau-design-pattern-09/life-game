@@ -1,5 +1,6 @@
 package com.holub.life;
 
+import com.holub.life.enumeration.Modifier;
 import com.holub.tools.Publisher;
 import com.holub.ui.MenuSite;
 
@@ -36,7 +37,7 @@ public class Clock {
     // are established.
     //
     private Clock() {
-        createMenus();
+        //createMenus();
     }
 
     private static Clock instance;
@@ -92,29 +93,28 @@ public class Clock {
         // First set up a single listener that will handle all the
         // menu-selection events except "Exit"
 
-        ActionListener modifier =                                    //{=startSetup}
+        // {=midSetup}
+        MenuSite.addLine(this, "Go", "Halt", getModifier(Modifier.HART));
+        MenuSite.addLine(this, "Go", "Tick (Single Step)", getModifier(Modifier.TICK));
+        MenuSite.addLine(this, "Go", "Agonizing", getModifier(Modifier.AGONIZING));
+        MenuSite.addLine(this, "Go", "Slow", getModifier(Modifier.SLOW));
+        MenuSite.addLine(this, "Go", "Medium", getModifier(Modifier.MEDIUM));
+        MenuSite.addLine(this, "Go", "Fast", getModifier(Modifier.FAST)); // {=endSetup}
+    }    //{=endCreateMenus}
+
+    private ActionListener getModifier(Modifier modifier) {
+        ActionListener actionListener =
                 new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        String name = ((JMenuItem) e.getSource()).getName();
-                        char toDo = name.charAt(0);
-
-                        if (toDo == 'T')
-                            tick();                      // single tick
+                        if (modifier.equals(Modifier.TICK))
+                            tick();
                         else
-                            startTicking(toDo == 'A' ? 500 :      // agonizing
-                                    toDo == 'S' ? 150 :      // slow
-                                            toDo == 'M' ? 70 :      // medium
-                                                    toDo == 'F' ? 30 : 0); // fast
+                            startTicking(modifier.getInterval());
                     }
                 };
-        // {=midSetup}
-        MenuSite.addLine(this, "Go", "Halt", modifier);
-        MenuSite.addLine(this, "Go", "Tick (Single Step)", modifier);
-        MenuSite.addLine(this, "Go", "Agonizing", modifier);
-        MenuSite.addLine(this, "Go", "Slow", modifier);
-        MenuSite.addLine(this, "Go", "Medium", modifier);
-        MenuSite.addLine(this, "Go", "Fast", modifier); // {=endSetup}
-    }    //{=endCreateMenus}
+
+        return actionListener;
+    }
 
     private Publisher publisher = new Publisher();
 
