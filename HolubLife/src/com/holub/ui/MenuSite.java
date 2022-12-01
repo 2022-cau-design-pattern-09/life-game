@@ -1,7 +1,5 @@
 package com.holub.ui;
 
-import com.holub.life.Clock;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -177,7 +175,7 @@ public final class MenuSite {
      *  method in an assertion ("assert valid()") then it will
      *  be removed when assetions are enabled.
      *
-     *  @throws AssertionError if the menu hasn't been established.
+     *  @throws AssertionException if the menu hasn't been established.
      */
 
     private static boolean valid() {

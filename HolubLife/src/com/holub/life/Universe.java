@@ -98,7 +98,41 @@ public class Universe extends JPanel {
                  }
                 );
 
+        MenuSite.addLine(this, "Grid", "Clear",
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        outermostCell.clear();
+                        repaint();
+                    }
+                }
+        );
 
+        MenuSite.addLine            // {=Universe.load.setup}
+                (this, "Grid", "Load",
+                        new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                doLoad();
+                            }
+                        }
+                );
+
+        MenuSite.addLine
+                (this, "Grid", "Store",
+                        new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                doStore();
+                            }
+                        }
+                );
+
+        MenuSite.addLine
+                (this, "Grid", "Exit",
+                        new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                System.exit(0);
+                            }
+                        }
+                );
 
         Clock.instance().addClockListener //{=Universe.clock.subscribe}
                 (new Clock.Listener() {
@@ -125,12 +159,7 @@ public class Universe extends JPanel {
         return theInstance;
     }
 
-    public void clear() {
-        outermostCell.clear();
-        repaint();
-    }
-
-    public void doLoad() {
+    private void doLoad() {
         try {
             FileInputStream in = new FileInputStream(
                     Files.userSelected(".", ".life", "Life File", "Load"));
@@ -150,7 +179,7 @@ public class Universe extends JPanel {
         repaint();
     }
 
-    public void doStore() {
+    private void doStore() {
         try {
             FileOutputStream out = new FileOutputStream(
                     Files.userSelected(".", ".life", "Life File", "Write"));
