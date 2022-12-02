@@ -1,12 +1,8 @@
 package com.holub.life;
 
-import com.holub.life.enumeration.Modifier;
 import com.holub.tools.Publisher;
-import com.holub.ui.MenuSite;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,7 +33,6 @@ public class Clock {
     // are established.
     //
     private Clock() {
-        //createMenus();
     }
 
     private static Clock instance;
@@ -83,37 +78,6 @@ public class Clock {
 
     public void stop() {
         startTicking(0);
-    }
-
-    /**
-     * Create the menu that controls the clock speed and
-     * put it onto the menu site.
-     */
-    private void createMenus() {
-        // First set up a single listener that will handle all the
-        // menu-selection events except "Exit"
-
-        // {=midSetup}
-        MenuSite.addLine(this, "Go", "Halt", getModifier(Modifier.HART));
-        MenuSite.addLine(this, "Go", "Tick (Single Step)", getModifier(Modifier.TICK));
-        MenuSite.addLine(this, "Go", "Agonizing", getModifier(Modifier.AGONIZING));
-        MenuSite.addLine(this, "Go", "Slow", getModifier(Modifier.SLOW));
-        MenuSite.addLine(this, "Go", "Medium", getModifier(Modifier.MEDIUM));
-        MenuSite.addLine(this, "Go", "Fast", getModifier(Modifier.FAST)); // {=endSetup}
-    }    //{=endCreateMenus}
-
-    private ActionListener getModifier(Modifier modifier) {
-        ActionListener actionListener =
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        if (modifier.equals(Modifier.TICK))
-                            tick();
-                        else
-                            startTicking(modifier.getInterval());
-                    }
-                };
-
-        return actionListener;
     }
 
     private Publisher publisher = new Publisher();
