@@ -11,6 +11,15 @@ public class SurroundingCells {
     private Cell southeast;
     private Cell southwest;
 
+    public Cell getNorth() { return this.north; }
+    public Cell getSouth() { return this.south; }
+    public Cell getEast() { return this.east; }
+    public Cell getWest() { return this.west; }
+    public Cell getNorthEast() { return this.northeast; }
+    public Cell getNorthWest() { return this.northwest; }
+    public Cell getSouthEast() { return this.southeast; }
+    public Cell getSouthWest() { return this.southwest; }
+
     private SurroundingCells (SurroundingCellsBuilder builder) {
         this.north = builder.north;
         this.south = builder.south;
