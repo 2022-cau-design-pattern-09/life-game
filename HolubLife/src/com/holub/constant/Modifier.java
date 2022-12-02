@@ -1,8 +1,6 @@
-package com.holub.life.enumeration;
+package com.holub.constant;
 
 public enum Modifier {
-    HART(0),
-    TICK(-1),
     AGONIZING(500),
     SLOW(150),
     MEDIUM(70),

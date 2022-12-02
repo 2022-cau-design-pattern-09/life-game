@@ -1,7 +1,7 @@
 package com.holub.life;
 
 import com.holub.asynch.ConditionVariable;
-import com.holub.ui.Colors;
+import com.holub.constant.Colors;
 
 import java.awt.*;
 import java.io.*;
@@ -368,7 +368,7 @@ public final class Neighborhood implements Cell {
             }
 
             g = g.create();
-            g.setColor(Colors.LIGHT_ORANGE);
+            g.setColor(Colors.LIGHT_ORANGE.getColor());
             g.drawRect(here.x, here.y, here.width, here.height);
 
             if (amActive) {

@@ -2,7 +2,7 @@ package com.holub.ui;
 
 import com.holub.life.Clock;
 import com.holub.life.Universe;
-import com.holub.life.enumeration.Modifier;
+import com.holub.constant.Modifier;
 
 public class MenuGenerator {
 
@@ -34,19 +34,19 @@ public class MenuGenerator {
             Clock.instance().tick();
         });
         MenuSite.addLine(requester, "Go", "Hart", e -> {
-            Clock.instance().startTicking(Modifier.HART.getInterval());
+            Clock.instance().stop();
         });
         MenuSite.addLine(requester, "Go", "Agonizing", e -> {
-            Clock.instance().startTicking(Modifier.AGONIZING.getInterval());
+            Clock.instance().startTicking(Modifier.AGONIZING);
         });
         MenuSite.addLine(requester, "Go", "Slow", e -> {
-            Clock.instance().startTicking(Modifier.SLOW.getInterval());
+            Clock.instance().startTicking(Modifier.SLOW);
         });
         MenuSite.addLine(requester, "Go", "Medium", e -> {
-            Clock.instance().startTicking(Modifier.MEDIUM.getInterval());
+            Clock.instance().startTicking(Modifier.MEDIUM);
         });
         MenuSite.addLine(requester, "Go", "Fast", e -> {
-            Clock.instance().startTicking(Modifier.FAST.getInterval());
+            Clock.instance().startTicking(Modifier.FAST);
         });
     }
 }
