@@ -53,10 +53,7 @@ public final class Resident implements Cell {
     }
 
     @Override
-    public boolean figureNextState(Cell north, Cell south,
-                            Cell east, Cell west,
-                            Cell northeast, Cell northwest,
-                            Cell southeast, Cell southwest)
+    public boolean figureNextState(SurroundingCells surroundingCells)
     {
         return false;
     }

@@ -103,21 +103,12 @@ public class Universe extends JPanel {
                 );
 
 
-
+        SurroundingCells updatedSurroundingCells = new SurroundingCells();
         Clock.instance().addClockListener //{=Universe.clock.subscribe}
-                (new Clock.Listener() {
-                     public void tick() {
-                         if (outermostCell.figureNextState
-                                 (Cell.DUMMY, Cell.DUMMY, Cell.DUMMY, Cell.DUMMY,
-                                         Cell.DUMMY, Cell.DUMMY, Cell.DUMMY, Cell.DUMMY
-                                 )
-                         ) {
-                             if (outermostCell.transition())
-                                 refreshNow();
-                         }
-                     }
-                 }
-                );
+        ( () -> { if (outermostCell.figureNextState(updatedSurroundingCells) && outermostCell.transition()) {
+                    refreshNow();
+                } }
+        );
     }
 
     /**

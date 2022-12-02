@@ -19,10 +19,7 @@ public interface Cell {
      *
      * @return true if the cell is unstable (changed state).
      */
-    boolean figureNextState(Cell north, Cell south,
-                            Cell east, Cell west,
-                            Cell northeast, Cell northwest,
-                            Cell southeast, Cell southwest);
+    boolean figureNextState(SurroundingCells surroundingCells);
 
 
     /**
@@ -161,8 +158,7 @@ public interface Cell {
      */
 
     public static final Cell DUMMY = new Cell() {
-        public boolean figureNextState(Cell n, Cell s, Cell e, Cell w,
-                                       Cell ne, Cell nw, Cell se, Cell sw) {
+        public boolean figureNextState(SurroundingCells s) {
             return true;
         }
 

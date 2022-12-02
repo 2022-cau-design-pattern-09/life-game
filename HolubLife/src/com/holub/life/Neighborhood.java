@@ -2,6 +2,7 @@ package com.holub.life;
 
 import com.holub.asynch.ConditionVariable;
 import com.holub.constant.Colors;
+import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
 import com.holub.rule.OriginalRule;
 import com.holub.rule.RelativePosition;
 import com.holub.rule.Rule;
@@ -125,34 +126,27 @@ public final class Neighborhood implements Cell {
      */
 
     @Override
-    public boolean figureNextState(Cell north, Cell south,
-                                   Cell east, Cell west,
-                                   Cell northeast, Cell northwest,
-                                   Cell southeast, Cell southwest)
+    public boolean figureNextState(SurroundingCells surroundingCells)
     {
         boolean nothingHappened = true;
+        Cell north = surroundingCells.getNorth();
+        Cell south = surroundingCells.getSouth();
+        Cell east = surroundingCells.getEast();
+        Cell west = surroundingCells.getWest();
+        Cell northeast = surroundingCells.getNorthEast();
+        Cell northwest = surroundingCells.getNorthWest();
+        Cell southeast = surroundingCells.getSouth();
+        Cell southwest = surroundingCells.getSouth();
 
         // Is some ajacent neigborhood active on the edge
         // that ajoins me?
 
-        if (amActive
-                || north.isDisruptiveTo().the(Direction.SOUTH)
-                || south.isDisruptiveTo().the(Direction.NORTH)
-                || east.isDisruptiveTo().the(Direction.WEST)
-                || west.isDisruptiveTo().the(Direction.EAST)
-                || northeast.isDisruptiveTo().the(Direction.SOUTHWEST)
-                || northwest.isDisruptiveTo().the(Direction.SOUTHEAST)
-                || southeast.isDisruptiveTo().the(Direction.NORTHWEST)
-                || southwest.isDisruptiveTo().the(Direction.NORTHEAST)
-        ) {
-            Cell northCell, southCell,
-                    eastCell, westCell,
-                    northeastCell, northwestCell,
-                    southeastCell, southwestCell;
+        if (amActive || surroundingCells.hasChangedStateSurroundingCells()) {
 
             for (int row = 0; row < gridSize; ++row) {
                 for (int column = 0; column < gridSize; ++column) {
-
+                    Cell northCell, southCell, eastCell, westCell;
+                    Cell northeastCell, northwestCell, southeastCell, southwestCell;
 
                     if (grid[0][0] instanceof Resident) {
 
@@ -287,15 +281,17 @@ public final class Neighborhood implements Cell {
                             // unstable. Also, if the unstable cell is on the
                             // edge of the block modify activeEdges to
                             //  indicate which edge or edges changed.
-
-                            if (grid[row][column].figureNextState
-                                    (
-                                            northCell, southCell,
-                                            eastCell, westCell,
-                                            northeastCell, northwestCell,
-                                            southeastCell, southwestCell
-                                    )
-                            ) {
+                            SurroundingCells updatedSurroundingCells = new SurroundingCellsBuilder()
+                                                                        .setNorth(northCell)
+                                                                        .setSouth(southCell)
+                                                                        .setEast(eastCell)
+                                                                        .setWest(westCell)
+                                                                        .setNorthEast(northeastCell)
+                                                                        .setNorthWest(northwestCell)
+                                                                        .setSouthEast(southeastCell)
+                                                                        .setSouthWest(southwestCell)
+                                                                        .build();
+                            if (grid[row][column].figureNextState (updatedSurroundingCells)) {
                                 nothingHappened = false;
                             }
                         }
