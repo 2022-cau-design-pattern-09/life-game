@@ -4,9 +4,9 @@ import java.util.List;
 
 public abstract class Rule {
 
-    abstract boolean isNumberToBorn(int number);
+    public abstract boolean isNumberToBorn(int number);
 
-    abstract boolean isNumberToSustain(int number);
+    public abstract boolean isNumberToSustain(int number);
 
-    abstract List<TempDirection> getNeighborhoods();
+    public abstract List<RelativePosition> getRelativePositions();
 }

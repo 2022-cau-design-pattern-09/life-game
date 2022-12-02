@@ -1,6 +1,8 @@
 package com.holub.life;
 
 import com.holub.io.Files;
+import com.holub.rule.OriginalRule;
+import com.holub.rule.Rule;
 import com.holub.ui.MenuSite;
 
 import javax.swing.*;
@@ -22,6 +24,7 @@ import java.io.IOException;
  */
 
 public class Universe extends JPanel {
+
     private final Cell outermostCell;
     private static final Universe theInstance = new Universe();
 

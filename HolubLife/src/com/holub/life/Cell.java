@@ -1,5 +1,6 @@
 package com.holub.life;
 
+import java.util.List;
 import java.awt.*;
 
 /***
@@ -22,6 +23,7 @@ public interface Cell {
                             Cell east, Cell west,
                             Cell northeast, Cell northwest,
                             Cell southeast, Cell southwest);
+
 
     /**
      * Access a specific contained cell located at the edge of the

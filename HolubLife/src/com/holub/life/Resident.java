@@ -1,8 +1,11 @@
 package com.holub.life;
 
 import com.holub.constant.Colors;
+import com.holub.rule.OriginalRule;
+import com.holub.rule.Rule;
 
 import java.awt.*;
+import java.util.List;
 
 /*** ****************************************************************
  * The Resident class implements a single cell---a "resident" of a
@@ -29,33 +32,33 @@ public final class Resident implements Cell {
      * @return true if the cell is not stable (will change state on the
      * next transition().
      */
-    public boolean figureNextState(
-            Cell north, Cell south,
-            Cell east, Cell west,
-            Cell northeast, Cell northwest,
-            Cell southeast, Cell southwest) {
-        verify(north, "north");
-        verify(south, "south");
-        verify(east, "east");
-        verify(west, "west");
-        verify(northeast, "northeast");
-        verify(northwest, "northwest");
-        verify(southeast, "southeast");
-        verify(southwest, "southwest");
+
+    public boolean figureNextState(List<Cell> neighborResidents)
+    {
+        for (Cell cell : neighborResidents) {
+            verify(cell, "[unknown]"); // TODO: show direction
+        }
 
         int neighbors = 0;
+        for (Cell cell : neighborResidents) {
+            if (cell.isAlive()) neighbors++;
+        }
 
-        if (north.isAlive()) ++neighbors;
-        if (south.isAlive()) ++neighbors;
-        if (east.isAlive()) ++neighbors;
-        if (west.isAlive()) ++neighbors;
-        if (northeast.isAlive()) ++neighbors;
-        if (northwest.isAlive()) ++neighbors;
-        if (southeast.isAlive()) ++neighbors;
-        if (southwest.isAlive()) ++neighbors;
+        Rule rule = new OriginalRule(); // TEST
 
-        willBeAlive = (neighbors == 3 || (amAlive && neighbors == 2));
+        willBeAlive = (amAlive && rule.isNumberToSustain(neighbors)) ||
+                (!amAlive && rule.isNumberToBorn(neighbors));
+
         return !isStable();
+    }
+
+    @Override
+    public boolean figureNextState(Cell north, Cell south,
+                            Cell east, Cell west,
+                            Cell northeast, Cell northwest,
+                            Cell southeast, Cell southwest)
+    {
+        return false;
     }
 
     private void verify(Cell c, String direction) {
