@@ -31,6 +31,17 @@ public class SurroundingCells {
         this.southwest = builder.southwest;
     }
 
+    public SurroundingCells() {
+        this.north = Cell.DUMMY;
+        this.south = Cell.DUMMY;
+        this.east = Cell.DUMMY;
+        this.west = Cell.DUMMY;
+        this.northeast = Cell.DUMMY;
+        this.northwest = Cell.DUMMY;
+        this.southeast = Cell.DUMMY;
+        this.southwest = Cell.DUMMY;
+    } 
+
     public Boolean hasChangedStateSurroundingCells () {
         return north.isDisruptiveTo().the(Direction.SOUTH) 
             || south.isDisruptiveTo().the(Direction.NORTH)
