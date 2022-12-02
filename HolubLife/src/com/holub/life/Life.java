@@ -26,7 +26,7 @@ public final class Life extends JFrame {
         // Must establish the MenuSite very early in case
         // a subcomponent puts menus on it.
         MenuSite.establish(this);        //{=life.java.establish}
-        MenuBuilder.generate(new Object());
+        MenuBuilder.generate(this);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
