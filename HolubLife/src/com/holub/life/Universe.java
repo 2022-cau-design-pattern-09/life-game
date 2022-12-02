@@ -93,11 +93,11 @@ public class Universe extends JPanel {
         addMouseListener                    //{=Universe.mouse}
                 (new MouseAdapter() {
                      public void mousePressed(MouseEvent e) {
-                         Rectangle bounds = getBounds();
-                         bounds.x = 0;
-                         bounds.y = 0;
-                         outermostCell.userClicked(e.getPoint(), bounds);
-                         repaint();
+            Rectangle bounds = getBounds();
+            bounds.x = 0;
+            bounds.y = 0;
+            outermostCell.userClicked(e.getPoint(), bounds);
+            repaint();
                      }
                  }
                 );
@@ -193,21 +193,19 @@ public class Universe extends JPanel {
 
     private void refreshNow() {
         SwingUtilities.invokeLater
-                (new Runnable() {
-                     public void run() {
-                         Graphics g = getGraphics();
-                         if (g == null)        // Universe not displayable
-                             return;
-                         try {
-                             Rectangle panelBounds = getBounds();
-                             panelBounds.x = 0;
-                             panelBounds.y = 0;
-                             outermostCell.redraw(g, panelBounds, false); //{=Universe.redraw2}
-                         } finally {
-                             g.dispose();
-                         }
-                     }
-                 }
+                (() -> {
+                        Graphics g = getGraphics();
+                        if (g == null)        // Universe not displayable
+                            return;
+                        try {
+                            Rectangle panelBounds = getBounds();
+                            panelBounds.x = 0;
+                            panelBounds.y = 0;
+                            outermostCell.redraw(g, panelBounds, false); //{=Universe.redraw2}
+                        } finally{
+                            g.dispose();
+                        }
+                    }
                 );
     }
 }
