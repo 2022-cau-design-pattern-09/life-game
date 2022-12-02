@@ -72,9 +72,10 @@ public class Universe extends JPanel {
                          // total size must be an even multiple of 63.
 
                          Rectangle bounds = getBounds();
-                         bounds.height /= outermostCell.widthInCells();
-                         bounds.height *= outermostCell.widthInCells();
-                         bounds.width = bounds.height;
+                         int outermostCellSize = Math.min(bounds.width, bounds.height);
+                         outermostCellSize /= outermostCell.widthInCells();
+                         outermostCellSize *= outermostCell.widthInCells();
+                         bounds.height = bounds.width = outermostCellSize;
                          setBounds(bounds);
                      }
                  }
