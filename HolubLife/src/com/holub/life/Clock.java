@@ -1,5 +1,6 @@
 package com.holub.life;
 
+import com.holub.constant.Modifier;
 import com.holub.tools.Publisher;
 
 import javax.swing.*;
@@ -51,17 +52,15 @@ public class Clock {
     /**
      * Start up the clock.
      *
-     * @param millisecondsBetweenTicks The number of milliseconds between
+     * @param modifier Enum that has the number of milliseconds between
      *                                 ticks. A value of 0 indicates that
      *                                 the clock should be stopped.
      */
 
-    public void startTicking(int millisecondsBetweenTicks) {
-        if (tick != null) {
-            tick.cancel();
-            tick = null;
-        }
+    public void startTicking(Modifier modifier) {
+        stop();
 
+        int millisecondsBetweenTicks = modifier.getInterval();
         if (millisecondsBetweenTicks > 0) {
             tick = new TimerTask() {
                 public void run() {
@@ -77,7 +76,10 @@ public class Clock {
      */
 
     public void stop() {
-        startTicking(0);
+        if (tick != null) {
+            tick.cancel();
+            tick = null;
+        }
     }
 
     private Publisher publisher = new Publisher();
