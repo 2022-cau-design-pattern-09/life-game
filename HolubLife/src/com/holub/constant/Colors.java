@@ -46,54 +46,73 @@ import java.awt.*;
  * @see java.awt.Color
  */
 
-public interface Colors {
+public enum Colors {
+    /*** basic colors ***/
+    BLUE(Color.BLUE),
+    RED(Color.RED),
+    YELLOW(Color.YELLOW),
+
     /*** RGB=(0x99, 0x00, 0x00); <span style="background-color:#990000;">&nbsp;&nbsp;&nbsp;</span> */
-    Color DARK_RED = new Color(0x99, 0x00, 0x00);
+    DARK_RED(new Color(0x99, 0x00, 0x00)),
     /*** RGB=(0xcc, 0x00, 0x00); <span style="background-color:#cc0000;">&nbsp;&nbsp;&nbsp;</span> */
-    Color MEDIUM_RED = new Color(0xcc, 0x00, 0x00);
+    MEDIUM_RED(new Color(0xcc, 0x00, 0x00)),
     /*** RGB=(0xff, 0x00, 0x00); <span style="background-color:#ff0000;">&nbsp;&nbsp;&nbsp;</span> */
-    Color LIGHT_RED = new Color(0xff, 0x00, 0x00);
+    LIGHT_RED(new Color(0xff, 0x00, 0x00)),
 
     /*** RGB=(0xff, 0x66, 0x00); <span style="background-color:#ff6600;">&nbsp;&nbsp;&nbsp;</span> */
-    Color DARK_ORANGE = new Color(0xff, 0x66, 0x00);
+    DARK_ORANGE(new Color(0xff, 0x66, 0x00)),
     /*** RGB=(0xff, 0x99, 0x00); <span style="background-color:#ff9900;">&nbsp;&nbsp;&nbsp;</span> */
-    Color MEDIUM_ORANGE = new Color(0xff, 0x99, 0x00);
+    MEDIUM_ORANGE(new Color(0xff, 0x99, 0x00)),
     /*** RGB=(0xff, 0xcc, 0x00); <span style="background-color:#ffcc00;">&nbsp;&nbsp;&nbsp;</span> */
-    Color LIGHT_ORANGE = new Color(0xff, 0xcc, 0x00);
+    LIGHT_ORANGE(new Color(0xff, 0xcc, 0x00)),
     /*** RGB=(0xff, 0x99, 0x00); <span style="background-color:#ff9900;">&nbsp;&nbsp;&nbsp;</span> */
-    Color ORANGE = new Color(0xff, 0x99, 0x00);
+    ORANGE(new Color(0xff, 0x99, 0x00)),
 
     /*** RGB=(0xcc, 0x99, 0x00); <span style="background-color:#cc9900;">&nbsp;&nbsp;&nbsp;</span> */
-    Color OCHRE = new Color(0xcc, 0x99, 0x00);
+    OCHRE(new Color(0xcc, 0x99, 0x00)),
     /*** RGB=(0xff, 0xff, 0x00); <span style="background-color:#ffff00;">&nbsp;&nbsp;&nbsp;</span> */
-    Color DARK_YELLOW = new Color(0xff, 0xff, 0x00);
+    DARK_YELLOW(new Color(0xff, 0xff, 0x00)),
     /*** RGB=(0xff, 0xff, 0x99); <span style="background-color:#ffff99;">&nbsp;&nbsp;&nbsp;</span> */
-    Color MEDIUM_YELLOW = new Color(0xff, 0xff, 0x99);
+    MEDIUM_YELLOW(new Color(0xff, 0xff, 0x99)),
     /*** RGB=(0xff, 0xff, 0xdd); <span style="background-color:#ffffdd;">&nbsp;&nbsp;&nbsp;</span> */
-    Color LIGHT_YELLOW = new Color(0xff, 0xff, 0xdd);
+    LIGHT_YELLOW(new Color(0xff, 0xff, 0xdd)),
 
     /*** RGB=(0x00, 0x66, 0x00); <span style="background-color:#006600;">&nbsp;&nbsp;&nbsp;</span> */
-    Color DARK_GREEN = new Color(0x00, 0x66, 0x00);
+    DARK_GREEN(new Color(0x00, 0x66, 0x00)),
     /*** RGB=(0x00, 0x99, 0x00); <span style="background-color:#009900;">&nbsp;&nbsp;&nbsp;</span> */
-    Color MEDIUM_GREEN = new Color(0x00, 0x99, 0x00);
+    MEDIUM_GREEN(new Color(0x00, 0x99, 0x00)),
     /*** RGB=(0x00, 0xff, 0x00); <span style="background-color:#00ff00;">&nbsp;&nbsp;&nbsp;</span> */
-    Color LIGHT_GREEN = new Color(0x00, 0xff, 0x00);
+    LIGHT_GREEN(new Color(0x00, 0xff, 0x00)),
     /*** RGB=(0x00, 0x99, 0x00); <span style="background-color:#009900;">&nbsp;&nbsp;&nbsp;</span> */
-    Color GREEN = MEDIUM_GREEN;
+    GREEN(MEDIUM_GREEN),
 
     /*** RGB=(0x00, 0x00, 0x99); <span style="background-color:#000099;">&nbsp;&nbsp;&nbsp;</span> */
-    Color DARK_BLUE = new Color(0x00, 0x00, 0x99);
+    DARK_BLUE(new Color(0x00, 0x00, 0x99)),
     /*** RGB=(0x00, 0x00, 0xcc); <span style="background-color:#0000cc;">&nbsp;&nbsp;&nbsp;</span> */
-    Color MEDIUM_BLUE = new Color(0x00, 0x00, 0xcc);
+    MEDIUM_BLUE(new Color(0x00, 0x00, 0xcc)),
     /*** RGB=(0x00, 0x00, 0xff); <span style="background-color:#0000ff;">&nbsp;&nbsp;&nbsp;</span> */
-    Color LIGHT_BLUE = new Color(0x00, 0x00, 0xff);
+    LIGHT_BLUE(new Color(0x00, 0x00, 0xff)),
 
     /*** RGB=(0x99, 0x00, 0x99); <span style="background-color:#990099;">&nbsp;&nbsp;&nbsp;</span> */
-    Color DARK_PURPLE = new Color(0x99, 0x00, 0x99);
+    DARK_PURPLE(new Color(0x99, 0x00, 0x99)),
     /*** RGB=(0xcc, 0x00, 0xff); <span style="background-color:#cc00ff;">&nbsp;&nbsp;&nbsp;</span> */
-    Color MEDIUM_PURPLE = new Color(0xcc, 0x00, 0xff);
+    MEDIUM_PURPLE(new Color(0xcc, 0x00, 0xff)),
     /*** RGB=(0xcc, 0x99, 0xff); <span style="background-color:#cc99ff;">&nbsp;&nbsp;&nbsp;</span> */
-    Color LIGHT_PURPLE = new Color(0xcc, 0x99, 0xff);
+    LIGHT_PURPLE(new Color(0xcc, 0x99, 0xff)),
     /*** RGB=(0xcc, 0x00, 0xff); <span style="background-color:#cc00ff;">&nbsp;&nbsp;&nbsp;</span> */
-    Color PURPLE = MEDIUM_PURPLE;
+    PURPLE(MEDIUM_PURPLE);
+
+    private Color color;
+
+    Colors(Color color) {
+        this.color = color;
+    }
+
+    Colors(Colors colors) {
+        this.color = colors.getColor();
+    }
+
+    public Color getColor() {
+        return color;
+    }
 }
