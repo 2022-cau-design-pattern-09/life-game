@@ -1,7 +1,7 @@
 package com.holub.life;
 
 import com.holub.asynch.ConditionVariable;
-import com.holub.ui.Colors;
+import com.holub.constant.Colors;
 
 import java.awt.*;
 import java.io.*;

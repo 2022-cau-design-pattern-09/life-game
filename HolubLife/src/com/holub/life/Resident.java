@@ -1,6 +1,6 @@
 package com.holub.life;
 
-import com.holub.ui.Colors;
+import com.holub.constant.Colors;
 
 import java.awt.*;
 
