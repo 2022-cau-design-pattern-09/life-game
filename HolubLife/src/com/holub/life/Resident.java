@@ -2,7 +2,7 @@ package com.holub.life;
 
 import com.holub.constant.Colors;
 import com.holub.rule.OriginalRule;
-import com.holub.rule.Rule;
+import com.holub.rule.Ruler;
 
 import java.awt.*;
 import java.util.List;
@@ -39,15 +39,8 @@ public final class Resident implements Cell {
             verify(cell, "[unknown]"); // TODO: show direction
         }
 
-        int neighbors = 0;
-        for (Cell cell : neighborResidents) {
-            if (cell.isAlive()) neighbors++;
-        }
-
-        Rule rule = new OriginalRule(); // TEST
-
-        willBeAlive = (amAlive && rule.isNumberToSustain(neighbors)) ||
-                (!amAlive && rule.isNumberToBorn(neighbors));
+        Ruler.setRule(new OriginalRule()); // Test
+        willBeAlive = Ruler.willBeAlive(neighborResidents, amAlive);
 
         return !isStable();
     }

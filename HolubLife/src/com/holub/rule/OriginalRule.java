@@ -3,6 +3,8 @@ package com.holub.rule;
 import java.util.Arrays;
 import java.util.List;
 
+import com.holub.life.Cell;
+
 public class OriginalRule extends Rule {
 
     private final List<Integer> numbersToSustain = Arrays.asList(2, 3);
@@ -20,13 +22,15 @@ public class OriginalRule extends Rule {
     );
 
     @Override
-    public boolean isNumberToBorn(int number) {
-        return numbersToBorn.contains(number);
-    }
+    public boolean willBeAlive(List<Cell> neighborResidents, boolean amAlive) {
+        int neighbors = 0;
+        for(Cell c: neighborResidents){
+            if (c.isAlive()) 
+                neighbors++; 
+        }
 
-    @Override
-    public boolean isNumberToSustain(int number) {
-        return numbersToSustain.contains(number);
+        return (amAlive && numbersToSustain.contains(neighbors)) ||
+            (!amAlive && numbersToBorn.contains(neighbors));
     }
 
     @Override
