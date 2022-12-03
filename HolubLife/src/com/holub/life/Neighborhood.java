@@ -135,8 +135,8 @@ public final class Neighborhood implements Cell {
         Cell west = surroundingCells.getWest();
         Cell northeast = surroundingCells.getNorthEast();
         Cell northwest = surroundingCells.getNorthWest();
-        Cell southeast = surroundingCells.getSouth();
-        Cell southwest = surroundingCells.getSouth();
+        Cell southeast = surroundingCells.getSouthEast();
+        Cell southwest = surroundingCells.getSouthWest();
 
         // Is some ajacent neigborhood active on the edge
         // that ajoins me?
