@@ -27,4 +27,8 @@ public class Ruler {
     public static boolean willBeAlive(List<Cell> neighborResidents, boolean amAlive){
         return instance.rule.willBeAlive(neighborResidents, amAlive);
     }
+
+    public static List<RelativePosition> getRelativePositions(){
+        return instance.rule.getRelativePositions();
+    };
 }
