@@ -66,6 +66,11 @@ public final class Resident implements Cell {
         assert row == 0 && column == 0;
         return this;
     }
+    
+    public Cell at(int row, int column) {
+        assert row == 0 && column == 0;
+        return this;
+    }
 
     public boolean transition() {
         boolean changed = isStable();

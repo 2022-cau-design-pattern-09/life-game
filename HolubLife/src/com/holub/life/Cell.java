@@ -33,7 +33,7 @@ public interface Cell {
      * @return true    if the the state changed.
      */
     Cell edge(int row, int column);
-
+    Cell at(int row, int column);
     /**
      * Transition to the state computed by the most recent call to
      * {@link #figureNextState}
@@ -161,7 +161,9 @@ public interface Cell {
         public boolean figureNextState(SurroundingCells s) {
             return true;
         }
-
+        public Cell at(int r, int c) {
+            return this;
+        }
         public Cell edge(int r, int c) {
             return this;
         }

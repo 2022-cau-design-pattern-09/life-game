@@ -5,7 +5,7 @@ import com.holub.constant.Colors;
 import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
 import com.holub.rule.OriginalRule;
 import com.holub.rule.RelativePosition;
-import com.holub.rule.Rule;
+import com.holub.rule.Ruler;
 
 import java.awt.*;
 import java.io.*;
@@ -142,62 +142,33 @@ public final class Neighborhood implements Cell {
         // that ajoins me?
 
         if (amActive || surroundingCells.hasChangedStateSurroundingCells()) {
+            Cell neighbors[] = {northwest, northeast, north, 
+                                    southwest, southeast, south, 
+                                    west, east, this
+                                };
+            int directionValue[][] = {{-1, -1}, {-1, 1}, {-1, 0},
+                                        {1, -1}, {1, 1}, {1, 0},
+                                        {0, -1}, {0, 1}, {0, 0},
+                                    };
 
             for (int row = 0; row < gridSize; ++row) {
                 for (int column = 0; column < gridSize; ++column) {
-                    Cell northCell, southCell, eastCell, westCell;
-                    Cell northeastCell, northwestCell, southeastCell, southwestCell;
-
                     if (grid[0][0] instanceof Resident) {
 
                         List<Cell> adjacentCells = new ArrayList<>();
-                        Rule rule = new OriginalRule(); // TEST
+                        Ruler.setRule(new OriginalRule()); // TEST
 
-                        for (RelativePosition relativePosition : rule.getRelativePositions()) {
-                            int nextRow = row + relativePosition.getDy();
-                            int nextColumn = column + relativePosition.getDx();
-
-                            if (nextRow < 0) {
-                                if (nextColumn < 0) {
-                                    adjacentCells.add(
-                                            northwest.edge(nextRow + gridSize, nextColumn + gridSize)
+                        for (RelativePosition relativePosition : Ruler.getRelativePositions()) {
+                            int targetRow = row + relativePosition.getDy();
+                            int targetColumn = column + relativePosition.getDx();
+                            
+                            for (int index = 0; index < neighbors.length; index++){
+                                if ((targetRow + gridSize) / gridSize - 1 == directionValue[index][0]
+                                    && (targetColumn + gridSize) / gridSize - 1 == directionValue[index][1]){
+                                        adjacentCells.add(
+                                            neighbors[index].at((targetRow + gridSize) % gridSize, (targetColumn + gridSize) % gridSize)
                                     );
-                                } else if (nextColumn >= gridSize) {
-                                    adjacentCells.add(
-                                            northeast.edge(nextRow + gridSize, nextColumn - gridSize)
-                                    );
-                                } else {
-                                    adjacentCells.add(
-                                            north.edge(nextRow + gridSize, nextColumn)
-                                    );
-                                }
-                            } else if (nextRow >= gridSize) {
-                                if (nextColumn < 0) {
-                                    adjacentCells.add(
-                                            southwest.edge(nextRow - gridSize, nextColumn + gridSize)
-                                    );
-                                } else if (nextColumn >= gridSize) {
-                                    adjacentCells.add(
-                                            southeast.edge(nextRow - gridSize, nextColumn - gridSize)
-                                    );
-                                } else {
-                                    adjacentCells.add(
-                                            south.edge(nextRow - gridSize, nextColumn)
-                                    );
-                                }
-                            } else {
-                                if (nextColumn < 0) {
-                                    adjacentCells.add(
-                                            west.edge(nextRow, nextColumn + gridSize)
-                                    );
-                                } else if (nextColumn >= gridSize) {
-                                    adjacentCells.add(
-                                            east.edge(nextRow, nextColumn - gridSize)
-                                    );
-                                } else {
-                                    adjacentCells.add(
-                                            grid[nextRow][nextColumn]
-                                    );
+                                    break;
                                 }
                             }
                         }
@@ -206,73 +177,28 @@ public final class Neighborhood implements Cell {
                         {
                             nothingHappened = false;
                         }
-
                     }
 
                     else {
                             // Get the current cell's eight neighbors
+                            Cell[] neighborCells = new Cell[8];
+                                                // {northwestCell, northeastCell, northCell,
+                                                // southwestCell, southeastCell, southCell,
+                                                //  westCell, eastCell};
 
-                            if (row == 0)        //{=Neighborhood.get.neighbors}
-                            {
-                                northwestCell = (column == 0)
-                                        ? northwest.edge(gridSize - 1, gridSize - 1)
-                                        : north.edge(gridSize - 1, column - 1)
-                                ;
+                            for(int i = 0; i < 8; i++){
+                                int targetRow = row + directionValue[i][0];
+                                int targetColumn = column + directionValue[i][1];
 
-                                northCell = north.edge(gridSize - 1, column);
+                                for(int j = 0; j < directionValue.length; j++){
+                                    if((targetRow + gridSize) / gridSize - 1 == directionValue[j][0]
+                                        && (targetColumn + gridSize) / gridSize - 1 == directionValue[j][1]) {
 
-                                northeastCell = (column == gridSize - 1)
-                                        ? northeast.edge(gridSize - 1, 0)
-                                        : north.edge(gridSize - 1, column + 1)
-                                ;
-                            } else {
-                                northwestCell = (column == 0)
-                                        ? west.edge(row - 1, gridSize - 1)
-                                        : grid[row - 1][column - 1]
-                                ;
+                                        neighborCells[i] = neighbors[j].at((targetRow + gridSize) % gridSize,  (targetColumn + gridSize) % gridSize);
+                                        break;
 
-                                northCell = grid[row - 1][column];
-
-                                northeastCell = (column == gridSize - 1)
-                                        ? east.edge(row - 1, 0)
-                                        : grid[row - 1][column + 1]
-                                ;
-                            }
-
-                            westCell = (column == 0)
-                                    ? west.edge(row, gridSize - 1)
-                                    : grid[row][column - 1]
-                            ;
-
-                            eastCell = (column == gridSize - 1)
-                                    ? east.edge(row, 0)
-                                    : grid[row][column + 1]
-                            ;
-
-                            if (row == gridSize - 1) {
-                                southwestCell = (column == 0)
-                                        ? southwest.edge(0, gridSize - 1)
-                                        : south.edge(0, column - 1)
-                                ;
-
-                                southCell = south.edge(0, column);
-
-                                southeastCell = (column == gridSize - 1)
-                                        ? southeast.edge(0, 0)
-                                        : south.edge(0, column + 1)
-                                ;
-                            } else {
-                                southwestCell = (column == 0)
-                                        ? west.edge(row + 1, gridSize - 1)
-                                        : grid[row + 1][column - 1]
-                                ;
-
-                                southCell = grid[row + 1][column];
-
-                                southeastCell = (column == gridSize - 1)
-                                        ? east.edge(row + 1, 0)
-                                        : grid[row + 1][column + 1]
-                                ;
+                                    } 
+                                }
                             }
 
                             // Tell the cell to change its state. If
@@ -282,15 +208,16 @@ public final class Neighborhood implements Cell {
                             // edge of the block modify activeEdges to
                             //  indicate which edge or edges changed.
                             SurroundingCells updatedSurroundingCells = new SurroundingCellsBuilder()
-                                                                        .setNorth(northCell)
-                                                                        .setSouth(southCell)
-                                                                        .setEast(eastCell)
-                                                                        .setWest(westCell)
-                                                                        .setNorthEast(northeastCell)
-                                                                        .setNorthWest(northwestCell)
-                                                                        .setSouthEast(southeastCell)
-                                                                        .setSouthWest(southwestCell)
+                                                                        .setNorthWest(neighborCells[0])
+                                                                        .setNorthEast(neighborCells[1])
+                                                                        .setNorth(neighborCells[2])
+                                                                        .setSouthWest(neighborCells[3])
+                                                                        .setSouthEast(neighborCells[4])
+                                                                        .setSouth(neighborCells[5])
+                                                                        .setWest(neighborCells[6])
+                                                                        .setEast(neighborCells[7])
                                                                         .build();
+
                             if (grid[row][column].figureNextState (updatedSurroundingCells)) {
                                 nothingHappened = false;
                             }
@@ -456,6 +383,13 @@ public final class Neighborhood implements Cell {
                 || (column == 0 || column == gridSize - 1)
                 : "central cell requested from edge()";
 
+        return grid[row][column];
+    }
+
+    public Cell at(int row, int column) {
+        assert (row >= 0 && row < gridSize 
+            && column >= 0 && column < gridSize)
+            : "Out of range cell requested from at()";
         return grid[row][column];
     }
 
