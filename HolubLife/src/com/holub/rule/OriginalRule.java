@@ -6,7 +6,7 @@ import java.util.List;
 public class OriginalRule extends Rule {
 
     private final List<Integer> numbersToSustain = Arrays.asList(2, 3);
-    private final List<Integer> numbersToBorn = Arrays.asList(2);
+    private final List<Integer> numbersToBorn = Arrays.asList(3);
 
     private final List<RelativePosition> neighborhoods = Arrays.asList(
             new RelativePosition(-1, -1),
