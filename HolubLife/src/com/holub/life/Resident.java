@@ -1,8 +1,6 @@
 package com.holub.life;
 
 import com.holub.constant.Colors;
-import com.holub.rule.OriginalRule;
-import com.holub.rule.Ruler;
 
 import java.awt.*;
 import java.util.List;
@@ -39,8 +37,7 @@ public final class Resident implements Cell {
             verify(cell, "[unknown]"); // TODO: show direction
         }
 
-        Ruler.setRule(new OriginalRule()); // Test
-        willBeAlive = Ruler.willBeAlive(neighborResidents, amAlive);
+        willBeAlive = Universe.instance().getRule().willBeAlive(neighborResidents, amAlive);
 
         return !isStable();
     }

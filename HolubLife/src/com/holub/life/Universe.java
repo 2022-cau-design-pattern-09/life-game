@@ -1,9 +1,10 @@
 package com.holub.life;
 
 import com.holub.io.Files;
+import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
+import com.holub.rule.BigNeighborRule;
 import com.holub.rule.OriginalRule;
 import com.holub.rule.Rule;
-import com.holub.ui.MenuSite;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ import java.io.IOException;
 
 public class Universe extends JPanel {
 
+    private Rule rule;
     private final Cell outermostCell;
     private static final Universe theInstance = new Universe();
 
@@ -51,6 +53,8 @@ public class Universe extends JPanel {
         // in the current implementation causes the program to fail
         // miserably if the overall size of the grid is too big to fit
         // on the screen.
+
+        setRule(new BigNeighborRule());
 
         outermostCell = new Neighborhood
                 (DEFAULT_GRID_SIZE,
@@ -103,12 +107,30 @@ public class Universe extends JPanel {
                 );
 
 
-        SurroundingCells updatedSurroundingCells = new SurroundingCells();
+        SurroundingCells updatedSurroundingCells = new SurroundingCellsBuilder()
+                .setNorthWest(Cell.DUMMY)
+                .setNorthEast(Cell.DUMMY)
+                .setNorth(Cell.DUMMY)
+                .setSouthWest(Cell.DUMMY)
+                .setSouthEast(Cell.DUMMY)
+                .setSouth(Cell.DUMMY)
+                .setWest(Cell.DUMMY)
+                .setEast(Cell.DUMMY)
+                .build();
+
         Clock.instance().addClockListener //{=Universe.clock.subscribe}
         ( () -> { if (outermostCell.figureNextState(updatedSurroundingCells) && outermostCell.transition()) {
                     refreshNow();
                 } }
         );
+    }
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public void setRule(Rule rule) {
+        this.rule = rule;
     }
 
     /**

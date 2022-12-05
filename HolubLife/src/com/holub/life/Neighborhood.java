@@ -3,9 +3,7 @@ package com.holub.life;
 import com.holub.asynch.ConditionVariable;
 import com.holub.constant.Colors;
 import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
-import com.holub.rule.OriginalRule;
 import com.holub.rule.RelativePosition;
-import com.holub.rule.Ruler;
 
 import java.awt.*;
 import java.io.*;
@@ -112,14 +110,7 @@ public final class Neighborhood implements Cell {
      * in as arguments rather than being stored internally---an
      * example of the Flyweight pattern.
      *
-     * @param north     The neighbor to our north
-     * @param south     The neighbor to our south
-     * @param east      The neighbor to our east
-     * @param west      The neighbor to our west
-     * @param northeast The neighbor to our northeast
-     * @param northwest The neighbor to our northwest
-     * @param southeast The neighbor to our southeast
-     * @param southwest The neighbor to our southwest
+     * @param surroundingCells The neighbors
      * @return true if this neighborhood (i.e. any of it's cells)
      * will change state in the next transition.
      * @see #transition
@@ -156,9 +147,8 @@ public final class Neighborhood implements Cell {
                     if (grid[0][0] instanceof Resident) {
 
                         List<Cell> adjacentCells = new ArrayList<>();
-                        Ruler.setRule(new OriginalRule()); // TEST
 
-                        for (RelativePosition relativePosition : Ruler.getRelativePositions()) {
+                        for (RelativePosition relativePosition : Universe.instance().getRule().getRelativePositions()) {
                             int targetRow = row + relativePosition.getDy();
                             int targetColumn = column + relativePosition.getDx();
                             
