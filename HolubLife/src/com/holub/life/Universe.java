@@ -1,7 +1,10 @@
 package com.holub.life;
 
 import com.holub.io.Files;
-import com.holub.ui.MenuSite;
+import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
+import com.holub.rule.BigNeighborRule;
+import com.holub.rule.OriginalRule;
+import com.holub.rule.Rule;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +25,8 @@ import java.io.IOException;
  */
 
 public class Universe extends JPanel {
+
+    private Rule rule;
     private final Cell outermostCell;
     private static final Universe theInstance = new Universe();
 
@@ -48,6 +53,8 @@ public class Universe extends JPanel {
         // in the current implementation causes the program to fail
         // miserably if the overall size of the grid is too big to fit
         // on the screen.
+
+        setRule(new BigNeighborRule());
 
         outermostCell = new Neighborhood
                 (DEFAULT_GRID_SIZE,
@@ -90,31 +97,40 @@ public class Universe extends JPanel {
         addMouseListener                    //{=Universe.mouse}
                 (new MouseAdapter() {
                      public void mousePressed(MouseEvent e) {
-                         Rectangle bounds = getBounds();
-                         bounds.x = 0;
-                         bounds.y = 0;
-                         outermostCell.userClicked(e.getPoint(), bounds);
-                         repaint();
+            Rectangle bounds = getBounds();
+            bounds.x = 0;
+            bounds.y = 0;
+            outermostCell.userClicked(e.getPoint(), bounds);
+            repaint();
                      }
                  }
                 );
 
 
+        SurroundingCells updatedSurroundingCells = new SurroundingCellsBuilder()
+                .setNorthWest(Cell.DUMMY)
+                .setNorthEast(Cell.DUMMY)
+                .setNorth(Cell.DUMMY)
+                .setSouthWest(Cell.DUMMY)
+                .setSouthEast(Cell.DUMMY)
+                .setSouth(Cell.DUMMY)
+                .setWest(Cell.DUMMY)
+                .setEast(Cell.DUMMY)
+                .build();
 
         Clock.instance().addClockListener //{=Universe.clock.subscribe}
-                (new Clock.Listener() {
-                     public void tick() {
-                         if (outermostCell.figureNextState
-                                 (Cell.DUMMY, Cell.DUMMY, Cell.DUMMY, Cell.DUMMY,
-                                         Cell.DUMMY, Cell.DUMMY, Cell.DUMMY, Cell.DUMMY
-                                 )
-                         ) {
-                             if (outermostCell.transition())
-                                 refreshNow();
-                         }
-                     }
-                 }
-                );
+        ( () -> { if (outermostCell.figureNextState(updatedSurroundingCells) && outermostCell.transition()) {
+                    refreshNow();
+                } }
+        );
+    }
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public void setRule(Rule rule) {
+        this.rule = rule;
     }
 
     /**
@@ -199,21 +215,19 @@ public class Universe extends JPanel {
 
     private void refreshNow() {
         SwingUtilities.invokeLater
-                (new Runnable() {
-                     public void run() {
-                         Graphics g = getGraphics();
-                         if (g == null)        // Universe not displayable
-                             return;
-                         try {
-                             Rectangle panelBounds = getBounds();
-                             panelBounds.x = 0;
-                             panelBounds.y = 0;
-                             outermostCell.redraw(g, panelBounds, false); //{=Universe.redraw2}
-                         } finally {
-                             g.dispose();
-                         }
-                     }
-                 }
+                (() -> {
+                        Graphics g = getGraphics();
+                        if (g == null)        // Universe not displayable
+                            return;
+                        try {
+                            Rectangle panelBounds = getBounds();
+                            panelBounds.x = 0;
+                            panelBounds.y = 0;
+                            outermostCell.redraw(g, panelBounds, false); //{=Universe.redraw2}
+                        } finally{
+                            g.dispose();
+                        }
+                    }
                 );
     }
 }

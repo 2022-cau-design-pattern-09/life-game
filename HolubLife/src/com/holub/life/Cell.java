@@ -1,5 +1,6 @@
 package com.holub.life;
 
+import java.util.List;
 import java.awt.*;
 
 /***
@@ -18,10 +19,8 @@ public interface Cell {
      *
      * @return true if the cell is unstable (changed state).
      */
-    boolean figureNextState(Cell north, Cell south,
-                            Cell east, Cell west,
-                            Cell northeast, Cell northwest,
-                            Cell southeast, Cell southwest);
+    boolean figureNextState(SurroundingCells surroundingCells);
+
 
     /**
      * Access a specific contained cell located at the edge of the
@@ -34,7 +33,7 @@ public interface Cell {
      * @return true    if the the state changed.
      */
     Cell edge(int row, int column);
-
+    Cell at(int row, int column);
     /**
      * Transition to the state computed by the most recent call to
      * {@link #figureNextState}
@@ -159,11 +158,12 @@ public interface Cell {
      */
 
     public static final Cell DUMMY = new Cell() {
-        public boolean figureNextState(Cell n, Cell s, Cell e, Cell w,
-                                       Cell ne, Cell nw, Cell se, Cell sw) {
+        public boolean figureNextState(SurroundingCells s) {
             return true;
         }
-
+        public Cell at(int r, int c) {
+            return this;
+        }
         public Cell edge(int r, int c) {
             return this;
         }

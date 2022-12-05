@@ -2,12 +2,13 @@ package com.holub.life;
 
 import com.holub.asynch.ConditionVariable;
 import com.holub.constant.Colors;
+import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
+import com.holub.rule.RelativePosition;
 
 import java.awt.*;
 import java.io.*;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.List;
 
 /***
  * A group of {@link Cell} objects. Cells are grouped into neighborhoods
@@ -109,128 +110,108 @@ public final class Neighborhood implements Cell {
      * in as arguments rather than being stored internally---an
      * example of the Flyweight pattern.
      *
-     * @param north     The neighbor to our north
-     * @param south     The neighbor to our south
-     * @param east      The neighbor to our east
-     * @param west      The neighbor to our west
-     * @param northeast The neighbor to our northeast
-     * @param northwest The neighbor to our northwest
-     * @param southeast The neighbor to our southeast
-     * @param southwest The neighbor to our southwest
+     * @param surroundingCells The neighbors
      * @return true if this neighborhood (i.e. any of it's cells)
      * will change state in the next transition.
      * @see #transition
      */
 
-    public boolean figureNextState(Cell north, Cell south,
-                                   Cell east, Cell west,
-                                   Cell northeast, Cell northwest,
-                                   Cell southeast, Cell southwest) {
+    @Override
+    public boolean figureNextState(SurroundingCells surroundingCells)
+    {
         boolean nothingHappened = true;
+        Cell north = surroundingCells.getNorth();
+        Cell south = surroundingCells.getSouth();
+        Cell east = surroundingCells.getEast();
+        Cell west = surroundingCells.getWest();
+        Cell northeast = surroundingCells.getNorthEast();
+        Cell northwest = surroundingCells.getNorthWest();
+        Cell southeast = surroundingCells.getSouthEast();
+        Cell southwest = surroundingCells.getSouthWest();
 
         // Is some ajacent neigborhood active on the edge
         // that ajoins me?
 
-        if (amActive
-                || north.isDisruptiveTo().the(Direction.SOUTH)
-                || south.isDisruptiveTo().the(Direction.NORTH)
-                || east.isDisruptiveTo().the(Direction.WEST)
-                || west.isDisruptiveTo().the(Direction.EAST)
-                || northeast.isDisruptiveTo().the(Direction.SOUTHWEST)
-                || northwest.isDisruptiveTo().the(Direction.SOUTHEAST)
-                || southeast.isDisruptiveTo().the(Direction.NORTHWEST)
-                || southwest.isDisruptiveTo().the(Direction.NORTHEAST)
-        ) {
-            Cell northCell, southCell,
-                    eastCell, westCell,
-                    northeastCell, northwestCell,
-                    southeastCell, southwestCell;
-
-            // activeEdges.clear();
+        if (amActive || surroundingCells.hasChangedStateSurroundingCells()) {
+            Cell neighbors[] = {northwest, northeast, north, 
+                                    southwest, southeast, south, 
+                                    west, east, this
+                                };
+            int directionValue[][] = {{-1, -1}, {-1, 1}, {-1, 0},
+                                        {1, -1}, {1, 1}, {1, 0},
+                                        {0, -1}, {0, 1}, {0, 0},
+                                    };
 
             for (int row = 0; row < gridSize; ++row) {
                 for (int column = 0; column < gridSize; ++column) {
-                    // Get the current cell's eight neighbors
+                    if (grid[0][0] instanceof Resident) {
 
-                    if (row == 0)        //{=Neighborhood.get.neighbors}
-                    {
-                        northwestCell = (column == 0)
-                                ? northwest.edge(gridSize - 1, gridSize - 1)
-                                : north.edge(gridSize - 1, column - 1)
-                        ;
+                        List<Cell> adjacentCells = new ArrayList<>();
 
-                        northCell = north.edge(gridSize - 1, column);
+                        for (RelativePosition relativePosition : Universe.instance().getRule().getRelativePositions()) {
+                            int targetRow = row + relativePosition.getDy();
+                            int targetColumn = column + relativePosition.getDx();
+                            
+                            for (int index = 0; index < neighbors.length; index++){
+                                if ((targetRow + gridSize) / gridSize - 1 == directionValue[index][0]
+                                    && (targetColumn + gridSize) / gridSize - 1 == directionValue[index][1]){
+                                        adjacentCells.add(
+                                            neighbors[index].at((targetRow + gridSize) % gridSize, (targetColumn + gridSize) % gridSize)
+                                    );
+                                    break;
+                                }
+                            }
+                        }
 
-                        northeastCell = (column == gridSize - 1)
-                                ? northeast.edge(gridSize - 1, 0)
-                                : north.edge(gridSize - 1, column + 1)
-                        ;
-                    } else {
-                        northwestCell = (column == 0)
-                                ? west.edge(row - 1, gridSize - 1)
-                                : grid[row - 1][column - 1]
-                        ;
-
-                        northCell = grid[row - 1][column];
-
-                        northeastCell = (column == gridSize - 1)
-                                ? east.edge(row - 1, 0)
-                                : grid[row - 1][column + 1]
-                        ;
+                        if (((Resident)grid[row][column]).figureNextState(adjacentCells))
+                        {
+                            nothingHappened = false;
+                        }
                     }
 
-                    westCell = (column == 0)
-                            ? west.edge(row, gridSize - 1)
-                            : grid[row][column - 1]
-                    ;
+                    else {
+                            // Get the current cell's eight neighbors
+                            Cell[] neighborCells = new Cell[8];
+                                                // {northwestCell, northeastCell, northCell,
+                                                // southwestCell, southeastCell, southCell,
+                                                //  westCell, eastCell};
 
-                    eastCell = (column == gridSize - 1)
-                            ? east.edge(row, 0)
-                            : grid[row][column + 1]
-                    ;
+                            for(int i = 0; i < 8; i++){
+                                int targetRow = row + directionValue[i][0];
+                                int targetColumn = column + directionValue[i][1];
 
-                    if (row == gridSize - 1) {
-                        southwestCell = (column == 0)
-                                ? southwest.edge(0, gridSize - 1)
-                                : south.edge(0, column - 1)
-                        ;
+                                for(int j = 0; j < directionValue.length; j++){
+                                    if((targetRow + gridSize) / gridSize - 1 == directionValue[j][0]
+                                        && (targetColumn + gridSize) / gridSize - 1 == directionValue[j][1]) {
 
-                        southCell = south.edge(0, column);
+                                        neighborCells[i] = neighbors[j].at((targetRow + gridSize) % gridSize,  (targetColumn + gridSize) % gridSize);
+                                        break;
 
-                        southeastCell = (column == gridSize - 1)
-                                ? southeast.edge(0, 0)
-                                : south.edge(0, column + 1)
-                        ;
-                    } else {
-                        southwestCell = (column == 0)
-                                ? west.edge(row + 1, gridSize - 1)
-                                : grid[row + 1][column - 1]
-                        ;
+                                    } 
+                                }
+                            }
 
-                        southCell = grid[row + 1][column];
+                            // Tell the cell to change its state. If
+                            // the cell changed (the figureNextState request
+                            // returned false), then mark the current block as
+                            // unstable. Also, if the unstable cell is on the
+                            // edge of the block modify activeEdges to
+                            //  indicate which edge or edges changed.
+                            SurroundingCells updatedSurroundingCells = new SurroundingCellsBuilder()
+                                                                        .setNorthWest(neighborCells[0])
+                                                                        .setNorthEast(neighborCells[1])
+                                                                        .setNorth(neighborCells[2])
+                                                                        .setSouthWest(neighborCells[3])
+                                                                        .setSouthEast(neighborCells[4])
+                                                                        .setSouth(neighborCells[5])
+                                                                        .setWest(neighborCells[6])
+                                                                        .setEast(neighborCells[7])
+                                                                        .build();
 
-                        southeastCell = (column == gridSize - 1)
-                                ? east.edge(row + 1, 0)
-                                : grid[row + 1][column + 1]
-                        ;
-                    }
-
-                    // Tell the cell to change its state. If
-                    // the cell changed (the figureNextState request
-                    // returned false), then mark the current block as
-                    // unstable. Also, if the unstable cell is on the
-                    // edge of the block modify activeEdges to
-                    //  indicate which edge or edges changed.
-
-                    if (grid[row][column].figureNextState
-                            (northCell, southCell,
-                                    eastCell, westCell,
-                                    northeastCell, northwestCell,
-                                    southeastCell, southwestCell
-                            )
-                    ) {
-                        nothingHappened = false;
-                    }
+                            if (grid[row][column].figureNextState (updatedSurroundingCells)) {
+                                nothingHappened = false;
+                            }
+                        }
                 }
             }
         }
@@ -392,6 +373,13 @@ public final class Neighborhood implements Cell {
                 || (column == 0 || column == gridSize - 1)
                 : "central cell requested from edge()";
 
+        return grid[row][column];
+    }
+
+    public Cell at(int row, int column) {
+        assert (row >= 0 && row < gridSize 
+            && column >= 0 && column < gridSize)
+            : "Out of range cell requested from at()";
         return grid[row][column];
     }
 

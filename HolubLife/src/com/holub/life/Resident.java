@@ -3,6 +3,7 @@ package com.holub.life;
 import com.holub.constant.Colors;
 
 import java.awt.*;
+import java.util.List;
 
 /*** ****************************************************************
  * The Resident class implements a single cell---a "resident" of a
@@ -29,33 +30,22 @@ public final class Resident implements Cell {
      * @return true if the cell is not stable (will change state on the
      * next transition().
      */
-    public boolean figureNextState(
-            Cell north, Cell south,
-            Cell east, Cell west,
-            Cell northeast, Cell northwest,
-            Cell southeast, Cell southwest) {
-        verify(north, "north");
-        verify(south, "south");
-        verify(east, "east");
-        verify(west, "west");
-        verify(northeast, "northeast");
-        verify(northwest, "northwest");
-        verify(southeast, "southeast");
-        verify(southwest, "southwest");
 
-        int neighbors = 0;
+    public boolean figureNextState(List<Cell> neighborResidents)
+    {
+        for (Cell cell : neighborResidents) {
+            verify(cell, "[unknown]"); // TODO: show direction
+        }
 
-        if (north.isAlive()) ++neighbors;
-        if (south.isAlive()) ++neighbors;
-        if (east.isAlive()) ++neighbors;
-        if (west.isAlive()) ++neighbors;
-        if (northeast.isAlive()) ++neighbors;
-        if (northwest.isAlive()) ++neighbors;
-        if (southeast.isAlive()) ++neighbors;
-        if (southwest.isAlive()) ++neighbors;
+        willBeAlive = Universe.instance().getRule().willBeAlive(neighborResidents, amAlive);
 
-        willBeAlive = (neighbors == 3 || (amAlive && neighbors == 2));
         return !isStable();
+    }
+
+    @Override
+    public boolean figureNextState(SurroundingCells surroundingCells)
+    {
+        return false;
     }
 
     private void verify(Cell c, String direction) {
@@ -70,6 +60,11 @@ public final class Resident implements Cell {
      * requsted since the width is 1.
      */
     public Cell edge(int row, int column) {
+        assert row == 0 && column == 0;
+        return this;
+    }
+    
+    public Cell at(int row, int column) {
         assert row == 0 && column == 0;
         return this;
     }
