@@ -4,11 +4,12 @@ import com.holub.asynch.ConditionVariable;
 import com.holub.constant.Colors;
 import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
 import com.holub.rule.RelativePosition;
+import com.holub.rule.Rule;
 
 import java.awt.*;
 import java.io.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /***
  * A group of {@link Cell} objects. Cells are grouped into neighborhoods
@@ -117,7 +118,7 @@ public final class Neighborhood implements Cell {
      */
 
     @Override
-    public boolean figureNextState(SurroundingCells surroundingCells)
+    public boolean figureNextState(SurroundingCells surroundingCells, Rule rule)
     {
         boolean nothingHappened = true;
         Cell north = surroundingCells.getNorth();
@@ -148,7 +149,7 @@ public final class Neighborhood implements Cell {
 
                         List<Cell> adjacentCells = new ArrayList<>();
 
-                        for (RelativePosition relativePosition : Universe.instance().getRule().getRelativePositions()) {
+                        for (RelativePosition relativePosition : rule.getRelativePositions()) {
                             int targetRow = row + relativePosition.getDy();
                             int targetColumn = column + relativePosition.getDx();
                             
@@ -163,7 +164,7 @@ public final class Neighborhood implements Cell {
                             }
                         }
 
-                        if (((Resident)grid[row][column]).figureNextState(adjacentCells))
+                        if (((Resident)grid[row][column]).figureNextState(adjacentCells, rule))
                         {
                             nothingHappened = false;
                         }
@@ -208,7 +209,7 @@ public final class Neighborhood implements Cell {
                                                                         .setEast(neighborCells[7])
                                                                         .build();
 
-                            if (grid[row][column].figureNextState (updatedSurroundingCells)) {
+                            if (grid[row][column].figureNextState(updatedSurroundingCells, rule)) {
                                 nothingHappened = false;
                             }
                         }

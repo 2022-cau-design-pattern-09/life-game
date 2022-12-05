@@ -1,6 +1,7 @@
 package com.holub.life;
 
-import java.util.List;
+import com.holub.rule.Rule;
+
 import java.awt.*;
 
 /***
@@ -19,7 +20,7 @@ public interface Cell {
      *
      * @return true if the cell is unstable (changed state).
      */
-    boolean figureNextState(SurroundingCells surroundingCells);
+    boolean figureNextState(SurroundingCells surroundingCells, Rule rule);
 
 
     /**
@@ -158,7 +159,7 @@ public interface Cell {
      */
 
     public static final Cell DUMMY = new Cell() {
-        public boolean figureNextState(SurroundingCells s) {
+        public boolean figureNextState(SurroundingCells s, Rule rule) {
             return true;
         }
         public Cell at(int r, int c) {

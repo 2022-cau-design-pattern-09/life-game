@@ -1,7 +1,7 @@
 package com.holub.life;
 
 import com.holub.io.Files;
-import com.holub.rule.BigNeighborRule;
+import com.holub.rule.OriginalRule;
 import com.holub.rule.Rule;
 
 import java.awt.*;
@@ -12,7 +12,6 @@ import java.util.Observable;
 
 public class Universe extends Observable {
     private static final int DEFAULT_GRID_SIZE = 8;
-    private static final int DEFAULT_CELL_SIZE = 8;
 
     private Cell outermostCell;
     private Rule rule;
@@ -21,7 +20,8 @@ public class Universe extends Observable {
         outermostCell = new Neighborhood(
                 DEFAULT_GRID_SIZE, new Neighborhood(
                         DEFAULT_GRID_SIZE, new Resident()));
-        setRule(new BigNeighborRule());
+
+        rule = new OriginalRule();
     }
 
     public void clear() {
@@ -56,6 +56,10 @@ public class Universe extends Observable {
         memento.flush(out);
 
         out.close();
+    }
+
+    public Cell getCell() {
+        return outermostCell;
     }
 
     public Rule getRule() {

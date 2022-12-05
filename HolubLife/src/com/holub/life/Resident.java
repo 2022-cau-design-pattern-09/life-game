@@ -1,6 +1,8 @@
 package com.holub.life;
 
 import com.holub.constant.Colors;
+import com.holub.rule.Rule;
+import com.holub.ui.UIManager;
 
 import java.awt.*;
 import java.util.List;
@@ -31,19 +33,19 @@ public final class Resident implements Cell {
      * next transition().
      */
 
-    public boolean figureNextState(List<Cell> neighborResidents)
+    public boolean figureNextState(List<Cell> neighborResidents, Rule rule)
     {
         for (Cell cell : neighborResidents) {
             verify(cell, "[unknown]"); // TODO: show direction
         }
 
-        willBeAlive = Universe.instance().getRule().willBeAlive(neighborResidents, amAlive);
+        willBeAlive = rule.willBeAlive(neighborResidents, amAlive);
 
         return !isStable();
     }
 
     @Override
-    public boolean figureNextState(SurroundingCells surroundingCells)
+    public boolean figureNextState(SurroundingCells surroundingCells, Rule rule)
     {
         return false;
     }

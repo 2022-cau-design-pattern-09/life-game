@@ -1,7 +1,7 @@
 package com.holub.life;
 
-import com.holub.ui.MenuBuilder;
 import com.holub.ui.MenuSite;
+import com.holub.ui.UIManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,6 @@ import java.awt.*;
  */
 
 public final class Life extends JFrame {
-    private static JComponent universe;
 
     public static void main(String[] arguments) {
         new Life();
@@ -25,12 +24,16 @@ public final class Life extends JFrame {
 
         // Must establish the MenuSite very early in case
         // a subcomponent puts menus on it.
-        MenuSite.establish(this);        //{=life.java.establish}
-        MenuBuilder.generate(this);
+        MenuSite.establish(this);
+
+        Universe universe = new Universe();
+        UIManager ui = new UIManager(universe);
+
+        ui.establish();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(Universe.instance(), BorderLayout.CENTER); //{=life.java.install}
+        getContentPane().add(ui, BorderLayout.CENTER); //{=life.java.install}
 
         pack();
         setVisible(true);
