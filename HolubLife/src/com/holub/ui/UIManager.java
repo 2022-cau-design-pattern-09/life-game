@@ -42,6 +42,10 @@ public class UIManager extends JPanel implements Observer {
         theme = new OrangeTheme();
     }
 
+    public void setTheme(Theme theme){
+        this.theme = theme;
+    }
+
     public void establish() {
         setWindow();
         createMenu();
@@ -63,6 +67,7 @@ public class UIManager extends JPanel implements Observer {
     private void createMenu() {
         createGridMenu();
         createGoMenu();
+        createThemeMenu();
     }
 
     private void createGoMenu() {
@@ -111,6 +116,18 @@ public class UIManager extends JPanel implements Observer {
 
         MenuSite.addLine(this, "Grid", "Exit", e -> {
             System.exit(0);
+        });
+    }
+
+    private void createThemeMenu() {
+        MenuSite.addLine(this, "Theme", "Orange", e -> {
+            setTheme(new OrangeTheme());
+            paint(getGraphics());
+        });
+
+        MenuSite.addLine(this, "Theme", "Gray", e -> {
+            setTheme(new GrayTheme());
+            paint(getGraphics());
         });
     }
 
