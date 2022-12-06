@@ -1,4 +1,5 @@
-package com.holub.ui;
+package com.holub.theme;
+
 import com.holub.constant.Colors;
 
 public class OrangeTheme extends Theme{

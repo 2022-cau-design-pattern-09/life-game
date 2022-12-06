@@ -1,4 +1,5 @@
-package com.holub.ui;
+package com.holub.theme;
+
 import java.awt.*;
 
 public class GrayTheme extends Theme{
