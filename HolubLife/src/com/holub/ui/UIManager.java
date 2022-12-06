@@ -6,7 +6,7 @@ import com.holub.life.Clock;
 import com.holub.life.SurroundingCells;
 import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
 import com.holub.life.Universe;
-import com.holub.constant.Colors;
+import com.holub.Theme.*;
 
 import javax.swing.*;
 import java.awt.*;
