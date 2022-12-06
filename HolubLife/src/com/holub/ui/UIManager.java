@@ -32,12 +32,14 @@ import java.util.Observer;
 public class UIManager extends JPanel implements Observer {
 
     private static final int DEFAULT_CELL_SIZE = 8;
+    private Theme theme;
 
     Universe model;
 
     public UIManager(Universe model) {
         this.model = model;
         model.addObserver(this);
+        theme = new OrangeTheme();
     }
 
     public void establish() {
@@ -179,9 +181,7 @@ public class UIManager extends JPanel implements Observer {
         draw(cell, g, here, drawAll);
     }
 
-    private static final Color BORDER_COLOR = Colors.DARK_YELLOW.getColor();
-    private static final Color LIVE_COLOR = Colors.RED.getColor();
-    private static final Color DEAD_COLOR = Colors.LIGHT_YELLOW.getColor();
+
 
     public void draw(Cell cell, Graphics g, Rectangle here, boolean drawAll){
         if(!cell.shouldDraw() && !drawAll){
@@ -194,14 +194,14 @@ public class UIManager extends JPanel implements Observer {
         Cell[][] subcell = cell.subcell();
         if(subcell == null){
             g = g.create();
-            g.setColor(cell.isAlive() ? LIVE_COLOR : DEAD_COLOR);
+            g.setColor(cell.isAlive() ? theme.cellLiveColor() : theme.cellDeadColor());
             g.fillRect(here.x + 1, here.y + 1, here.width - 1, here.height - 1);
     
             // Doesn't draw a line on the far right and bottom of the
             // grid, but that's life, so to speak. It's not worth the
             // code for the special case.
     
-            g.setColor(BORDER_COLOR);
+            g.setColor(theme.cellBorderColor());
             g.drawLine(here.x, here.y, here.x, here.y + here.height);
             g.drawLine(here.x, here.y, here.x + here.width, here.y);
             g.dispose();
@@ -224,11 +224,11 @@ public class UIManager extends JPanel implements Observer {
             }
 
             g = g.create();
-            g.setColor(Colors.LIGHT_ORANGE.getColor());
+            g.setColor(theme.gridBorderColor());
             g.drawRect(here.x, here.y, here.width, here.height);
 
             if (cell.isAlive()) {
-                g.setColor(Color.BLUE);
+                g.setColor(theme.gridActiveColor());
                 g.drawRect(here.x + 1, here.y + 1,
                         here.width - 2, here.height - 2);
             }
