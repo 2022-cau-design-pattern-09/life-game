@@ -6,6 +6,8 @@ import com.holub.life.Clock;
 import com.holub.life.SurroundingCells;
 import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
 import com.holub.life.Universe;
+import com.holub.life.Neighborhood;
+import com.holub.constant.Colors;
 
 import javax.swing.*;
 import java.awt.*;
@@ -170,7 +172,70 @@ public class UIManager extends JPanel implements Observer {
         // corner of the screen. Pretend that it's at (0,0)
         panelBounds.x = 0;
         panelBounds.y = 0;
-        model.getCell().redraw(g, panelBounds, true);        //{=Universe.redraw1}
+        redraw(g, panelBounds, true);      //{=Universe.redraw1}
+    }
+
+    public void redraw(Graphics g, Rectangle here, boolean drawAll){
+        Cell cell = model.getCell();
+        draw(cell, g, here, drawAll);
+    }
+
+    private static final Color BORDER_COLOR = Colors.DARK_YELLOW.getColor();
+    private static final Color LIVE_COLOR = Colors.RED.getColor();
+    private static final Color DEAD_COLOR = Colors.LIGHT_YELLOW.getColor();
+
+    public void draw(Cell cell, Graphics g, Rectangle here, boolean drawAll){
+        if(!cell.shouldDraw() && !drawAll){
+            return;
+        }
+
+        int compoundWidth = here.width;
+        int gridSize = model.getGridSize();
+
+        Cell[][] subcell = cell.subcell();
+        if(subcell == null){
+            g = g.create();
+            g.setColor(cell.isAlive() ? LIVE_COLOR : DEAD_COLOR);
+            g.fillRect(here.x + 1, here.y + 1, here.width - 1, here.height - 1);
+    
+            // Doesn't draw a line on the far right and bottom of the
+            // grid, but that's life, so to speak. It's not worth the
+            // code for the special case.
+    
+            g.setColor(BORDER_COLOR);
+            g.drawLine(here.x, here.y, here.x, here.y + here.height);
+            g.drawLine(here.x, here.y, here.x + here.width, here.y);
+            g.dispose();
+        } else {
+            //oneLastRefreshRequired = false;
+            Rectangle subrect = new Rectangle(here.x, here.y,
+                    here.width / gridSize,
+                    here.height / gridSize);
+
+            // Check to see if we can paint. If not, just return. If
+            // so, actually wait for permission (in case there's
+            // a race condition, then paint.
+
+            for (int row = 0; row < gridSize; ++row) {
+                for (int column = 0; column < gridSize; ++column) {
+                    draw(subcell[row][column], g, subrect, drawAll);    // {=Neighborhood.redraw3}
+                    subrect.translate(subrect.width, 0);
+                }
+                subrect.translate(-compoundWidth, subrect.height);
+            }
+
+            g = g.create();
+            g.setColor(Colors.LIGHT_ORANGE.getColor());
+            g.drawRect(here.x, here.y, here.width, here.height);
+
+            if (cell.isAlive()) {
+                g.setColor(Color.BLUE);
+                g.drawRect(here.x + 1, here.y + 1,
+                        here.width - 2, here.height - 2);
+            }
+
+            g.dispose();
+        }
     }
 
     /**
@@ -193,7 +258,7 @@ public class UIManager extends JPanel implements Observer {
                             Rectangle panelBounds = getBounds();
                             panelBounds.x = 0;
                             panelBounds.y = 0;
-                            model.getCell().redraw(g, panelBounds, false); //{=Universe.redraw2}
+                            redraw(g, panelBounds, false); //{=Universe.redraw2}
                         } finally{
                             g.dispose();
                         }

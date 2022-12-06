@@ -57,8 +57,9 @@ public interface Cell {
      *                otherwise, draw only the subcells that need to be redrawn.
      */
 
-    void redraw(Graphics g, Rectangle here, boolean drawAll);
-
+    boolean shouldDraw();
+    Cell[][] subcell();
+    
     /**
      * A user has clicked somewhere within you.
      *
@@ -195,8 +196,12 @@ public interface Cell {
         public void userClicked(Point h, Rectangle s) {
         }
 
-        public void redraw(Graphics g, Rectangle here,
-                           boolean drawAll) {
+        public boolean shouldDraw(){
+            return false;
+        }
+
+        public Cell[][] subcell(){
+            return null;
         }
 
         public boolean transfer(Storable m, Point ul, boolean load) {

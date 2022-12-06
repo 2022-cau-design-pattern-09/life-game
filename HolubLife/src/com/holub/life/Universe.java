@@ -69,4 +69,8 @@ public class Universe extends Observable {
     public void setRule(Rule rule) {
         this.rule = rule;
     }
+
+    public int getGridSize(){
+        return DEFAULT_GRID_SIZE;
+    }
 }
