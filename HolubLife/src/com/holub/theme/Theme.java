@@ -9,6 +9,7 @@ public abstract class Theme {
     protected Color cellDeadColor = Colors.BLACK.getColor();
     protected Color gridBorderColor = Colors.BLACK.getColor();
     protected Color gridActiveColor = Colors.BLACK.getColor();
+    protected String name = "Default";
 
     public Color cellBorderColor(){
         return cellBorderColor;
@@ -24,5 +25,9 @@ public abstract class Theme {
     }
     public Color gridActiveColor(){
         return gridActiveColor;
+    }
+
+    public String getName(){
+        return name;
     }
 }

@@ -9,5 +9,7 @@ public class OrangeTheme extends Theme{
         cellDeadColor = Colors.LIGHT_YELLOW.getColor();
         gridBorderColor = Colors.LIGHT_ORANGE.getColor();
         gridActiveColor = Colors.BLUE.getColor();
+
+        name = "Orange";
     }
 }

@@ -124,15 +124,21 @@ public class UIManager extends JPanel implements Observer {
     }
 
     private void createThemeMenu() {
-        MenuSite.addLine(this, "Theme", "Orange", e -> {
-            setTheme(new OrangeTheme());
-            paint(getGraphics());
-        });
+        List<Theme> themes = Arrays.asList(
+            new CyanTheme(),
+            new GrayTheme(),
+            new GrenadineTheme(),
+            new IndigoTheme(),
+            new PinkTheme(),
+            new OrangeTheme()
+        );
 
-        MenuSite.addLine(this, "Theme", "Gray", e -> {
-            setTheme(new GrayTheme());
-            paint(getGraphics());
-        });
+        for (Theme theme: themes) {
+            MenuSite.addLine(this, "Theme", theme.getName(), e -> {
+                setTheme(theme);
+                paint(getGraphics());
+            });
+        }
     }
 
     private void createRuleMenu() {
