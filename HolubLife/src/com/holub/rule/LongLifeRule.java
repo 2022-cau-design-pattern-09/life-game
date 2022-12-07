@@ -5,11 +5,11 @@ import com.holub.life.Cell;
 import java.util.Arrays;
 import java.util.List;
 
-public class OriginalRule extends Rule {
+public class LongLifeRule extends Rule {
 
-    private final String name = "Original";
-    private final List<Integer> numbersToSustain = Arrays.asList(2, 3);
-    private final List<Integer> numbersToBorn = Arrays.asList(3);
+    private final String name = "Long Life";
+    private final List<Integer> numbersToSustain = Arrays.asList(5);
+    private final List<Integer> numbersToBorn = Arrays.asList(3, 4, 6);
 
     private final List<RelativePosition> neighborhoods = Arrays.asList(
             new RelativePosition(-1, -1),

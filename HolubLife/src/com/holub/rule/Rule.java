@@ -5,6 +5,7 @@ import com.holub.life.Cell;
 import java.util.List;
 
 public abstract class Rule {
+    public abstract String getName();
     public abstract boolean willBeAlive(List<Cell> neighbors, boolean amAlive);
     public abstract List<RelativePosition> getRelativePositions();
 }

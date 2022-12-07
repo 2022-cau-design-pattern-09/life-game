@@ -5,36 +5,20 @@ import com.holub.life.Cell;
 import java.util.Arrays;
 import java.util.List;
 
-public class BigNeighborRule extends Rule {
-    private final String name = "Big Neighbor";
-    private final List<Integer> numbersToSustain = Arrays.asList(4, 5, 6, 7, 8, 9);
-    private final List<Integer> numbersToBorn = Arrays.asList(8, 9);
+public class MazeRule extends Rule {
+    private final String name = "Maze";
+    private final List<Integer> numbersToSustain = Arrays.asList(1, 2, 3, 4, 5);
+    private final List<Integer> numbersToBorn = Arrays.asList(3);
 
     private final List<RelativePosition> neighborhoods = Arrays.asList(
-            new RelativePosition(-2, -2),
-            new RelativePosition(-2, -1),
-            new RelativePosition(-2, 0),
-            new RelativePosition(-2, 1),
-            new RelativePosition(-2, 2),
-            new RelativePosition(-1, -2),
             new RelativePosition(-1, -1),
             new RelativePosition(-1, 0),
             new RelativePosition(-1, 1),
-            new RelativePosition(-1, 2),
-            new RelativePosition(0, -2),
             new RelativePosition(0, -1),
             new RelativePosition(0, 1),
-            new RelativePosition(0, 2),
-            new RelativePosition(1, -2),
             new RelativePosition(1, -1),
             new RelativePosition(1, 0),
-            new RelativePosition(1, 1),
-            new RelativePosition(1, 2),
-            new RelativePosition(2, -2),
-            new RelativePosition(2, -1),
-            new RelativePosition(2, 0),
-            new RelativePosition(2, 1),
-            new RelativePosition(2, 2)
+            new RelativePosition(1, 1)
     );
 
     @Override
