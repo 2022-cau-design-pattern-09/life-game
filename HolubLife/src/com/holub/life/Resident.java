@@ -1,6 +1,8 @@
 package com.holub.life;
 
 import com.holub.constant.Colors;
+import com.holub.rule.Rule;
+import com.holub.ui.UIManager;
 
 import java.awt.*;
 import java.util.List;
@@ -13,10 +15,6 @@ import java.util.List;
  */
 
 public final class Resident implements Cell {
-    private static final Color BORDER_COLOR = Colors.DARK_YELLOW.getColor();
-    private static final Color LIVE_COLOR = Colors.RED.getColor();
-    private static final Color DEAD_COLOR = Colors.LIGHT_YELLOW.getColor();
-
     private boolean amAlive = false;
     private boolean willBeAlive = false;
 
@@ -31,19 +29,19 @@ public final class Resident implements Cell {
      * next transition().
      */
 
-    public boolean figureNextState(List<Cell> neighborResidents)
+    public boolean figureNextState(List<Cell> neighborResidents, Rule rule)
     {
         for (Cell cell : neighborResidents) {
             verify(cell, "[unknown]"); // TODO: show direction
         }
 
-        willBeAlive = Universe.instance().getRule().willBeAlive(neighborResidents, amAlive);
+        willBeAlive = rule.willBeAlive(neighborResidents, amAlive);
 
         return !isStable();
     }
 
     @Override
-    public boolean figureNextState(SurroundingCells surroundingCells)
+    public boolean figureNextState(SurroundingCells surroundingCells, Rule rule)
     {
         return false;
     }
@@ -75,19 +73,12 @@ public final class Resident implements Cell {
         return changed;
     }
 
-    public void redraw(Graphics g, Rectangle here, boolean drawAll) {
-        g = g.create();
-        g.setColor(amAlive ? LIVE_COLOR : DEAD_COLOR);
-        g.fillRect(here.x + 1, here.y + 1, here.width - 1, here.height - 1);
+    public boolean shouldDraw(){
+        return true;
+    }
 
-        // Doesn't draw a line on the far right and bottom of the
-        // grid, but that's life, so to speak. It's not worth the
-        // code for the special case.
-
-        g.setColor(BORDER_COLOR);
-        g.drawLine(here.x, here.y, here.x, here.y + here.height);
-        g.drawLine(here.x, here.y, here.x + here.width, here.y);
-        g.dispose();
+    public Cell[][] subcell(){
+        return null;
     }
 
     public void userClicked(Point here, Rectangle surface) {

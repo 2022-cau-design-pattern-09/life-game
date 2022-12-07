@@ -4,11 +4,12 @@ import com.holub.asynch.ConditionVariable;
 import com.holub.constant.Colors;
 import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
 import com.holub.rule.RelativePosition;
+import com.holub.rule.Rule;
 
 import java.awt.*;
 import java.io.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /***
  * A group of {@link Cell} objects. Cells are grouped into neighborhoods
@@ -117,7 +118,7 @@ public final class Neighborhood implements Cell {
      */
 
     @Override
-    public boolean figureNextState(SurroundingCells surroundingCells)
+    public boolean figureNextState(SurroundingCells surroundingCells, Rule rule)
     {
         boolean nothingHappened = true;
         Cell north = surroundingCells.getNorth();
@@ -148,7 +149,7 @@ public final class Neighborhood implements Cell {
 
                         List<Cell> adjacentCells = new ArrayList<>();
 
-                        for (RelativePosition relativePosition : Universe.instance().getRule().getRelativePositions()) {
+                        for (RelativePosition relativePosition : rule.getRelativePositions()) {
                             int targetRow = row + relativePosition.getDy();
                             int targetColumn = column + relativePosition.getDx();
                             
@@ -163,7 +164,7 @@ public final class Neighborhood implements Cell {
                             }
                         }
 
-                        if (((Resident)grid[row][column]).figureNextState(adjacentCells))
+                        if (((Resident)grid[row][column]).figureNextState(adjacentCells, rule))
                         {
                             nothingHappened = false;
                         }
@@ -208,7 +209,7 @@ public final class Neighborhood implements Cell {
                                                                         .setEast(neighborCells[7])
                                                                         .build();
 
-                            if (grid[row][column].figureNextState (updatedSurroundingCells)) {
+                            if (grid[row][column].figureNextState(updatedSurroundingCells, rule)) {
                                 nothingHappened = false;
                             }
                         }
@@ -303,66 +304,8 @@ public final class Neighborhood implements Cell {
         // else it's an internal cell. Do nothing.
     }
 
-    /**
-     * Redraw the current neighborhood only if necessary (something
-     * changed in the last transition).
-     *
-     * @param g       Draw onto this graphics.
-     * @param here    Bounding rectangle for current Neighborhood.
-     * @param drawAll force a redraw, even if nothing has changed.
-     * @see #transition
-     */
-
-    public void redraw(Graphics g, Rectangle here, boolean drawAll) {
-        // If the current neighborhood is stable (nothing changed
-        // in the last transition stage), then there's nothing
-        // to do. Just return. Otherwise, update the current block
-        // and all sub-blocks. Since this algorithm is applied
-        // recursively to sublocks, only those blocks that actually
-        // need to update will actually do so.
-
-
-        if (!amActive && !oneLastRefreshRequired && !drawAll)
-            return;
-        try {
-            oneLastRefreshRequired = false;
-            int compoundWidth = here.width;
-            Rectangle subcell = new Rectangle(here.x, here.y,
-                    here.width / gridSize,
-                    here.height / gridSize);
-
-            // Check to see if we can paint. If not, just return. If
-            // so, actually wait for permission (in case there's
-            // a race condition, then paint.
-
-            if (!readingPermitted.isTrue())    //{=Neighborhood.reading.not.permitted}
-                return;
-
-            readingPermitted.waitForTrue();
-
-            for (int row = 0; row < gridSize; ++row) {
-                for (int column = 0; column < gridSize; ++column) {
-                    grid[row][column].redraw(g, subcell, drawAll);    // {=Neighborhood.redraw3}
-                    subcell.translate(subcell.width, 0);
-                }
-                subcell.translate(-compoundWidth, subcell.height);
-            }
-
-            g = g.create();
-            g.setColor(Colors.LIGHT_ORANGE.getColor());
-            g.drawRect(here.x, here.y, here.width, here.height);
-
-            if (amActive) {
-                g.setColor(Color.BLUE);
-                g.drawRect(here.x + 1, here.y + 1,
-                        here.width - 2, here.height - 2);
-            }
-
-            g.dispose();
-        } catch (InterruptedException e) {    // thrown from waitForTrue. Just
-            // ignore it, since not printing is a
-            // reasonable reaction to an interrupt.
-        }
+    public boolean shouldDraw(){
+        return amActive || oneLastRefreshRequired;
     }
 
     /**
@@ -404,11 +347,15 @@ public final class Neighborhood implements Cell {
     }
 
     public boolean isAlive() {
-        return true;
+        return amActive;
     }
 
     public int widthInCells() {
         return gridSize * grid[0][0].widthInCells();
+    }
+
+    public Cell[][] subcell(){
+        return grid;
     }
 
     public void clear() {

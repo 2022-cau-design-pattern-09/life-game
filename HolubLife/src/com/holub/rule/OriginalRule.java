@@ -1,9 +1,9 @@
 package com.holub.rule;
 
+import com.holub.life.Cell;
+
 import java.util.Arrays;
 import java.util.List;
-
-import com.holub.life.Cell;
 
 public class OriginalRule extends Rule {
 

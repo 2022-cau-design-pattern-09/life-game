@@ -1,6 +1,7 @@
 package com.holub.life;
 
-import java.util.List;
+import com.holub.rule.Rule;
+
 import java.awt.*;
 
 /***
@@ -19,7 +20,7 @@ public interface Cell {
      *
      * @return true if the cell is unstable (changed state).
      */
-    boolean figureNextState(SurroundingCells surroundingCells);
+    boolean figureNextState(SurroundingCells surroundingCells, Rule rule);
 
 
     /**
@@ -56,8 +57,9 @@ public interface Cell {
      *                otherwise, draw only the subcells that need to be redrawn.
      */
 
-    void redraw(Graphics g, Rectangle here, boolean drawAll);
-
+    boolean shouldDraw();
+    Cell[][] subcell();
+    
     /**
      * A user has clicked somewhere within you.
      *
@@ -158,7 +160,7 @@ public interface Cell {
      */
 
     public static final Cell DUMMY = new Cell() {
-        public boolean figureNextState(SurroundingCells s) {
+        public boolean figureNextState(SurroundingCells s, Rule rule) {
             return true;
         }
         public Cell at(int r, int c) {
@@ -194,8 +196,12 @@ public interface Cell {
         public void userClicked(Point h, Rectangle s) {
         }
 
-        public void redraw(Graphics g, Rectangle here,
-                           boolean drawAll) {
+        public boolean shouldDraw(){
+            return false;
+        }
+
+        public Cell[][] subcell(){
+            return null;
         }
 
         public boolean transfer(Storable m, Point ul, boolean load) {

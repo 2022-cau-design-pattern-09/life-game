@@ -52,6 +52,8 @@ public enum Colors {
     RED(Color.RED),
     YELLOW(Color.YELLOW),
 
+    WHITE(new Color(0xFF, 0xFF, 0xFF)),
+    BLACK(new Color(0x00, 0x00, 0x00)),
     /*** RGB=(0x99, 0x00, 0x00); <span style="background-color:#990000;">&nbsp;&nbsp;&nbsp;</span> */
     DARK_RED(new Color(0x99, 0x00, 0x00)),
     /*** RGB=(0xcc, 0x00, 0x00); <span style="background-color:#cc0000;">&nbsp;&nbsp;&nbsp;</span> */
