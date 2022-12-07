@@ -11,17 +11,24 @@ import java.io.IOException;
 import java.util.Observable;
 
 public class Universe extends Observable {
-    private static final int DEFAULT_GRID_SIZE = 8;
 
+    private int gridSize = 8;
     private Cell outermostCell;
     private Rule rule;
 
     public Universe() {
         outermostCell = new Neighborhood(
-                DEFAULT_GRID_SIZE, new Neighborhood(
-                        DEFAULT_GRID_SIZE, new Resident()));
+                gridSize, new Neighborhood(
+                        gridSize, new Resident()));
 
         rule = new OriginalRule();
+    }
+
+    public void reconstruct(int gridSize) {
+        outermostCell = new Neighborhood(
+                gridSize, new Neighborhood(
+                    gridSize, new Resident()));
+        this.gridSize = gridSize;
     }
 
     public void clear() {
@@ -71,6 +78,6 @@ public class Universe extends Observable {
     }
 
     public int getGridSize(){
-        return DEFAULT_GRID_SIZE;
+        return gridSize;
     }
 }

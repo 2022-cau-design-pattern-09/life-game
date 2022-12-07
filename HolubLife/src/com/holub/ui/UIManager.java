@@ -72,6 +72,7 @@ public class UIManager extends JPanel implements Observer {
         createGoMenu();
         createThemeMenu();
         createRuleMenu();
+        createSizeMenu();
     }
 
     private void createGoMenu() {
@@ -159,16 +160,28 @@ public class UIManager extends JPanel implements Observer {
         }
     }
 
+    private void createSizeMenu() {
+        MenuSite.addLine(this, "Size", "6x6", e -> {
+            model.reconstruct(6);
+            resizeWindow();
+        });
+
+        MenuSite.addLine(this, "Size", "8x8", e -> {
+            model.reconstruct(8);
+            resizeWindow();
+        });
+
+        MenuSite.addLine(this, "Size", "10x10", e -> {
+            model.reconstruct(10);
+            resizeWindow();
+        });
+    }
+
     private void createEventListener(){
         addComponentListener(
                 new ComponentAdapter() {
                      public void componentResized(ComponentEvent e) {
-                         Rectangle bounds = getBounds();
-                         int outermostCellSize = Math.min(bounds.width, bounds.height);
-                         outermostCellSize /= model.getCell().widthInCells();
-                         outermostCellSize *= model.getCell().widthInCells();
-                         bounds.height = bounds.width = outermostCellSize;
-                         setBounds(bounds);
+                         resizeWindow();
                      }
                 });
 
@@ -200,6 +213,15 @@ public class UIManager extends JPanel implements Observer {
                     }
                 }
         );
+    }
+
+    private void resizeWindow() {
+        Rectangle bounds = getBounds();
+        int outermostCellSize = Math.min(bounds.width, bounds.height);
+        outermostCellSize /= model.getCell().widthInCells();
+        outermostCellSize *= model.getCell().widthInCells();
+        bounds.height = bounds.width = outermostCellSize;
+        setBounds(bounds);
     }
 
     /**
