@@ -139,11 +139,11 @@ public class UIManager extends JPanel implements Observer {
         List<Rule> allRules = Arrays.asList(
                 new OriginalRule(),
                 new HighLifeRule(),
-                new LongLifeRule(),
                 new DiamoebaRule(),
                 new HTreeRule(),
                 new MazeRule(),
-                new BigNeighborRule()
+                new BigDiamondRule(),
+                new BigSquareRule()
         );
 
         for (Rule rule: allRules) {

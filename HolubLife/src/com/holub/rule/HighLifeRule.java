@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HighLifeRule extends Rule {
-    private final String name = "HighLife";
+    private final String name = "High-Life";
     private final List<Integer> numbersToSustain = Arrays.asList(2, 3);
     private final List<Integer> numbersToBorn = Arrays.asList(3, 6);
 

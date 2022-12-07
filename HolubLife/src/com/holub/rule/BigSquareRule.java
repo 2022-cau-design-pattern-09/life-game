@@ -5,7 +5,7 @@ import com.holub.life.Cell;
 import java.util.Arrays;
 import java.util.List;
 
-public class BigNeighborRule extends Rule {
+public class BigSquareRule extends Rule {
     private final String name = "Big Neighbor";
     private final List<Integer> numbersToSustain = Arrays.asList(4, 5, 6, 7, 8, 9);
     private final List<Integer> numbersToBorn = Arrays.asList(8, 9);
