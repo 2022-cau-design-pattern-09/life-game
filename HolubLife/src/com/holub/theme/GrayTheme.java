@@ -9,5 +9,7 @@ public class GrayTheme extends Theme{
         cellDeadColor = new Color(0xC0, 0xC0, 0xC0);
         gridBorderColor = new Color(0x00, 0x00, 0x00);
         gridActiveColor = new Color(0x20, 0x20, 0x20);
+
+        name = "Gray";
     }
 }
