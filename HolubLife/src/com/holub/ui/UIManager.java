@@ -125,8 +125,12 @@ public class UIManager extends JPanel implements Observer {
 
     private void createThemeMenu() {
         List<Theme> themes = Arrays.asList(
-            new OrangeTheme(),
-            new GrayTheme()
+            new CyanTheme(),
+            new GrayTheme(),
+            new GrenadineTheme(),
+            new IndigoTheme(),
+            new PinkTheme(),
+            new OrangeTheme()
         );
 
         for (Theme theme: themes) {
