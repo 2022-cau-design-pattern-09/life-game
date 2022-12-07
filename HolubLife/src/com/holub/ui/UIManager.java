@@ -5,6 +5,7 @@ import com.holub.life.Cell;
 import com.holub.life.Clock;
 import com.holub.life.SurroundingCells;
 import com.holub.life.SurroundingCells.SurroundingCellsBuilder;
+import com.holub.rule.*;
 import com.holub.theme.*;
 import com.holub.life.Universe;
 
@@ -15,6 +16,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.List;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -68,6 +71,7 @@ public class UIManager extends JPanel implements Observer {
         createGridMenu();
         createGoMenu();
         createThemeMenu();
+        createRuleMenu();
     }
 
     private void createGoMenu() {
@@ -131,6 +135,23 @@ public class UIManager extends JPanel implements Observer {
         });
     }
 
+    private void createRuleMenu() {
+        List<Rule> allRules = Arrays.asList(
+                new OriginalRule(),
+                new HighLifeRule(),
+                new DiamoebaRule(),
+                new HTreeRule(),
+                new MazeRule(),
+                new BigDiamondRule(),
+                new BigSquareRule()
+        );
+
+        for (Rule rule: allRules) {
+            MenuSite.addLine(this, "Rule", rule.getName(), e -> {
+                model.setRule(rule);
+            });
+        }
+    }
 
     private void createEventListener(){
         addComponentListener(

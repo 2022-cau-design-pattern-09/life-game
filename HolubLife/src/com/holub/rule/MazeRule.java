@@ -5,10 +5,9 @@ import com.holub.life.Cell;
 import java.util.Arrays;
 import java.util.List;
 
-public class OriginalRule extends Rule {
-
-    private final String name = "Original";
-    private final List<Integer> numbersToSustain = Arrays.asList(2, 3);
+public class MazeRule extends Rule {
+    private final String name = "Maze";
+    private final List<Integer> numbersToSustain = Arrays.asList(1, 2, 3, 4, 5);
     private final List<Integer> numbersToBorn = Arrays.asList(3);
 
     private final List<RelativePosition> neighborhoods = Arrays.asList(
@@ -31,12 +30,12 @@ public class OriginalRule extends Rule {
     public boolean willBeAlive(List<Cell> neighborResidents, boolean amAlive) {
         int neighbors = 0;
         for(Cell c: neighborResidents){
-            if (c.isAlive()) 
-                neighbors++; 
+            if (c.isAlive())
+                neighbors++;
         }
 
         return (amAlive && numbersToSustain.contains(neighbors)) ||
-            (!amAlive && numbersToBorn.contains(neighbors));
+                (!amAlive && numbersToBorn.contains(neighbors));
     }
 
     @Override
