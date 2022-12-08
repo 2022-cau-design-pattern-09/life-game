@@ -26,6 +26,7 @@ public class Universe extends Observable {
 
     public void clear() {
         outermostCell.clear();
+        setChanged();
         notifyObservers();
     }
 
@@ -41,7 +42,7 @@ public class Universe extends Observable {
         outermostCell.transfer(memento, new Point(0, 0), Cell.LOAD);
 
         in.close();
-
+        setChanged();
         notifyObservers();
     }
 
