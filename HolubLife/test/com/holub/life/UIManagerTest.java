@@ -19,13 +19,4 @@ public class UIManagerTest {
         uiManager = new UIManager(universe);
     }
 
-    @Test
-    public void 크기_변경_테스트() throws AWTException {
-        // given
-        int newGridSize = 12;
-        // when
-        universe.reconstruct(12);
-        // then
-        assertEquals(universe.getGridSize(), newGridSize);
-    }
 }

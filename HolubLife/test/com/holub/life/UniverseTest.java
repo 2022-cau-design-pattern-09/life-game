@@ -15,18 +15,38 @@ public class UniverseTest {
     }
 
     @Test
-    public void 다음_티커_주변_셀_검증() {
+    public void nextTickTest() {
         // TODO 다음 틱에 주변 셀들의 상태를 검증
     }
 
     @Test
-    public void 클리어_검증() {
+    public void clickedTest(){
         //given
+        Cell target = universe.getCell().at(0, 0).at(0, 0);
+        //when
+        target.userClicked(null, null);
+        //then
+        assertTrue(target.isAlive());    
+    }
 
+    @Test
+    public void clearTest() {
+        //given
+        Cell target = universe.getCell().at(0, 0).at(0, 0);
+        target.userClicked(null, null);
         //when
         universe.clear();
         //then
-        Cell universeCells = universe.getCell();
-        assertFalse(universeCells.isAlive());
+        assertFalse(target.isAlive());
+    }
+
+    @Test
+    public void resizeTest() {
+        // given
+        int newGridSize = 12;
+        // when
+        universe.reconstruct(12);
+        // then
+        assertEquals(universe.getGridSize(), newGridSize);
     }
 }
