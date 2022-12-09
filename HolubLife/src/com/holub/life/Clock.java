@@ -1,6 +1,6 @@
 package com.holub.life;
 
-import com.holub.constant.Modifier;
+import com.holub.constant.ClockSpeed;
 import com.holub.tools.Publisher;
 
 import javax.swing.*;
@@ -57,7 +57,7 @@ public class Clock {
      *                                 the clock should be stopped.
      */
 
-    public void startTicking(Modifier modifier) {
+    public void startTicking(ClockSpeed modifier) {
         stop();
 
         int millisecondsBetweenTicks = modifier.getInterval();

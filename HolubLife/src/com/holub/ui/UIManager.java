@@ -1,6 +1,6 @@
 package com.holub.ui;
 
-import com.holub.constant.Modifier;
+import com.holub.constant.ClockSpeed;
 import com.holub.life.Cell;
 import com.holub.life.Clock;
 import com.holub.life.SurroundingCells;
@@ -83,16 +83,16 @@ public class UIManager extends JPanel implements Observer {
             Clock.instance().stop();
         });
         MenuSite.addLine(this, "Go", "Agonizing", e -> {
-            Clock.instance().startTicking(Modifier.AGONIZING);
+            Clock.instance().startTicking(ClockSpeed.AGONIZING);
         });
         MenuSite.addLine(this, "Go", "Slow", e -> {
-            Clock.instance().startTicking(Modifier.SLOW);
+            Clock.instance().startTicking(ClockSpeed.SLOW);
         });
         MenuSite.addLine(this, "Go", "Medium", e -> {
-            Clock.instance().startTicking(Modifier.MEDIUM);
+            Clock.instance().startTicking(ClockSpeed.MEDIUM);
         });
         MenuSite.addLine(this, "Go", "Fast", e -> {
-            Clock.instance().startTicking(Modifier.FAST);
+            Clock.instance().startTicking(ClockSpeed.FAST);
         });
     }
 
