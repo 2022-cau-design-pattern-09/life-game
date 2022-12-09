@@ -14,9 +14,6 @@ import com.holub.rule.OriginalRule;
 import com.holub.rule.Rule;
 
 public class UniverseTest {
-
-    private static Universe universe;
-
     @DisplayName("셀을 클릭 했을 때의 테스트")
     @Test
     public void clickedTest(){
