@@ -23,6 +23,7 @@ public class UniverseTest {
         universe = new Universe();
     }
 
+    @DisplayName("셀을 클릭 했을 때의 테스트")
     @Test
     public void clickedTest(){
         //given
@@ -33,6 +34,7 @@ public class UniverseTest {
         assertTrue(target.isAlive());    
     }
 
+    @DisplayName("이미 클릭 된 셀 클릭 했을 때의 테스트")
     @Test
     public void clickedTwiceTest(){
         //given
@@ -45,6 +47,7 @@ public class UniverseTest {
         assertFalse(target.isAlive());    
     }
 
+    @DisplayName("클리어 함수의 테스트")
     @Test
     public void clearTest() {
         //given
@@ -56,6 +59,7 @@ public class UniverseTest {
         assertFalse(target.isAlive());
     }
 
+    @DisplayName("그리드 사이즈가 잘 변경되는지 테스트")
     @Test
     public void resizeTest() {
         // given
@@ -66,6 +70,7 @@ public class UniverseTest {
         assertEquals(universe.getGridSize(), newGridSize);
     }
 
+    @DisplayName("룰이 잘 적용되는지 테스트")
     @Test
     public void setRuleTest(){
         // given
@@ -76,6 +81,7 @@ public class UniverseTest {
         assertTrue(universe.getRule() instanceof OriginalRule);
     }
 
+    @DisplayName("룰 변경이 잘 되는지 테스트")
     @Test
     public void ruleChangeTest(){
         // given
@@ -183,7 +189,7 @@ public class UniverseTest {
         //given
         universe.setRule(new OriginalRule());
         universe.reconstruct(3);
-        
+
         Cell grid1 = universe.getCell().at(0, 0);
         Cell grid2 = universe.getCell().at(0, 1);
 
