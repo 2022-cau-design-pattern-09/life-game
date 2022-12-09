@@ -15,12 +15,6 @@ import com.holub.rule.RelativePosition;
 import com.holub.rule.Rule;
 
 public class RuleTest {
-    
-    @BeforeAll
-    public static void init() {
-
-    }
-
     @DisplayName("주변에 3개의 살아있는 셀이 있을 때, 현재 셀은 유지되는가")
     @Test
     public void OriginalRuleTest_1() {

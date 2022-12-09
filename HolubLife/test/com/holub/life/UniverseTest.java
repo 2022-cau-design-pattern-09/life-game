@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,15 +17,11 @@ public class UniverseTest {
 
     private static Universe universe;
 
-    @BeforeAll
-    public static void init() {
-        universe = new Universe();
-    }
-
     @DisplayName("셀을 클릭 했을 때의 테스트")
     @Test
     public void clickedTest(){
         //given
+        Universe universe = new Universe();
         Cell target = universe.getCell().at(0, 0).at(0, 0);
         //when
         target.userClicked(null, null);
@@ -38,6 +33,7 @@ public class UniverseTest {
     @Test
     public void clickedTwiceTest(){
         //given
+        Universe universe = new Universe();
         Cell target = universe.getCell().at(0, 0).at(0, 0);
         target.userClicked(null, null); // When Target is Alive
 
@@ -51,6 +47,7 @@ public class UniverseTest {
     @Test
     public void clearTest() {
         //given
+        Universe universe = new Universe();
         Cell target = universe.getCell().at(0, 0).at(0, 0);
         target.userClicked(null, null); // Target is Alive
         //when
@@ -63,6 +60,7 @@ public class UniverseTest {
     @Test
     public void resizeTest() {
         // given
+        Universe universe = new Universe();
         int newGridSize = 12;
         // when
         universe.reconstruct(12);
@@ -74,6 +72,7 @@ public class UniverseTest {
     @Test
     public void setRuleTest(){
         // given
+        Universe universe = new Universe();
         Rule rule = new OriginalRule();
         // when
         universe.setRule(rule);
@@ -85,6 +84,7 @@ public class UniverseTest {
     @Test
     public void ruleChangeTest(){
         // given
+        Universe universe = new Universe();
         Rule rule = new BigDiamondRule();
         universe.setRule(new OriginalRule());
 
@@ -102,6 +102,7 @@ public class UniverseTest {
     @Test
     public void nextTickTest_1() {
         //given
+        Universe universe = new Universe();
         universe.setRule(new OriginalRule());
         Cell grid = universe.getCell().at(0, 0);
 
@@ -155,6 +156,7 @@ public class UniverseTest {
     @Test
     public void nextTickTest_2() {
         //given
+        Universe universe = new Universe();
         universe.setRule(new OriginalRule());
         Cell grid = universe.getCell().at(0, 0);
         
@@ -187,6 +189,7 @@ public class UniverseTest {
     @Test
     public void nextTickTest_3() {
         //given
+        Universe universe = new Universe();
         universe.setRule(new OriginalRule());
         universe.reconstruct(3);
 
