@@ -133,87 +133,85 @@ public final class Neighborhood implements Cell {
         // Is some ajacent neigborhood active on the edge
         // that ajoins me?
 
-        if (amActive || surroundingCells.hasChangedStateSurroundingCells()) {
-            Cell neighbors[] = {northwest, northeast, north, 
-                                    southwest, southeast, south, 
-                                    west, east, this
+        Cell neighbors[] = {northwest, northeast, north, 
+                                southwest, southeast, south, 
+                                west, east, this
+                            };
+        int directionValue[][] = {{-1, -1}, {-1, 1}, {-1, 0},
+                                    {1, -1}, {1, 1}, {1, 0},
+                                    {0, -1}, {0, 1}, {0, 0},
                                 };
-            int directionValue[][] = {{-1, -1}, {-1, 1}, {-1, 0},
-                                        {1, -1}, {1, 1}, {1, 0},
-                                        {0, -1}, {0, 1}, {0, 0},
-                                    };
 
-            for (int row = 0; row < gridSize; ++row) {
-                for (int column = 0; column < gridSize; ++column) {
-                    if (grid[0][0] instanceof Resident) {
+        for (int row = 0; row < gridSize; ++row) {
+            for (int column = 0; column < gridSize; ++column) {
+                if (grid[0][0] instanceof Resident) {
 
-                        List<Cell> adjacentCells = new ArrayList<>();
+                    List<Cell> adjacentCells = new ArrayList<>();
 
-                        for (RelativePosition relativePosition : rule.getRelativePositions()) {
-                            int targetRow = row + relativePosition.getDy();
-                            int targetColumn = column + relativePosition.getDx();
-                            
-                            for (int index = 0; index < neighbors.length; index++){
-                                if ((targetRow + gridSize) / gridSize - 1 == directionValue[index][0]
-                                    && (targetColumn + gridSize) / gridSize - 1 == directionValue[index][1]){
-                                        adjacentCells.add(
-                                            neighbors[index].at((targetRow + gridSize) % gridSize, (targetColumn + gridSize) % gridSize)
-                                    );
-                                    break;
-                                }
+                    for (RelativePosition relativePosition : rule.getRelativePositions()) {
+                        int targetRow = row + relativePosition.getDy();
+                        int targetColumn = column + relativePosition.getDx();
+                        
+                        for (int index = 0; index < neighbors.length; index++){
+                            if ((targetRow + gridSize) / gridSize - 1 == directionValue[index][0]
+                                && (targetColumn + gridSize) / gridSize - 1 == directionValue[index][1]){
+                                    adjacentCells.add(
+                                        neighbors[index].at((targetRow + gridSize) % gridSize, (targetColumn + gridSize) % gridSize)
+                                );
+                                break;
                             }
-                        }
-
-                        if (((Resident)grid[row][column]).figureNextState(adjacentCells, rule))
-                        {
-                            nothingHappened = false;
                         }
                     }
 
-                    else {
-                            // Get the current cell's eight neighbors
-                            Cell[] neighborCells = new Cell[8];
-                                                // {northwestCell, northeastCell, northCell,
-                                                // southwestCell, southeastCell, southCell,
-                                                //  westCell, eastCell};
+                    if (((Resident)grid[row][column]).figureNextState(adjacentCells, rule))
+                    {
+                        nothingHappened = false;
+                    }
+                }
 
-                            for(int i = 0; i < 8; i++){
-                                int targetRow = row + directionValue[i][0];
-                                int targetColumn = column + directionValue[i][1];
+                else {
+                        // Get the current cell's eight neighbors
+                        Cell[] neighborCells = new Cell[8];
+                                            // {northwestCell, northeastCell, northCell,
+                                            // southwestCell, southeastCell, southCell,
+                                            //  westCell, eastCell};
 
-                                for(int j = 0; j < directionValue.length; j++){
-                                    if((targetRow + gridSize) / gridSize - 1 == directionValue[j][0]
-                                        && (targetColumn + gridSize) / gridSize - 1 == directionValue[j][1]) {
+                        for(int i = 0; i < 8; i++){
+                            int targetRow = row + directionValue[i][0];
+                            int targetColumn = column + directionValue[i][1];
 
-                                        neighborCells[i] = neighbors[j].at((targetRow + gridSize) % gridSize,  (targetColumn + gridSize) % gridSize);
-                                        break;
+                            for(int j = 0; j < directionValue.length; j++){
+                                if((targetRow + gridSize) / gridSize - 1 == directionValue[j][0]
+                                    && (targetColumn + gridSize) / gridSize - 1 == directionValue[j][1]) {
 
-                                    } 
-                                }
-                            }
+                                    neighborCells[i] = neighbors[j].at((targetRow + gridSize) % gridSize,  (targetColumn + gridSize) % gridSize);
+                                    break;
 
-                            // Tell the cell to change its state. If
-                            // the cell changed (the figureNextState request
-                            // returned false), then mark the current block as
-                            // unstable. Also, if the unstable cell is on the
-                            // edge of the block modify activeEdges to
-                            //  indicate which edge or edges changed.
-                            SurroundingCells updatedSurroundingCells = new SurroundingCellsBuilder()
-                                                                        .setNorthWest(neighborCells[0])
-                                                                        .setNorthEast(neighborCells[1])
-                                                                        .setNorth(neighborCells[2])
-                                                                        .setSouthWest(neighborCells[3])
-                                                                        .setSouthEast(neighborCells[4])
-                                                                        .setSouth(neighborCells[5])
-                                                                        .setWest(neighborCells[6])
-                                                                        .setEast(neighborCells[7])
-                                                                        .build();
-
-                            if (grid[row][column].figureNextState(updatedSurroundingCells, rule)) {
-                                nothingHappened = false;
+                                } 
                             }
                         }
-                }
+
+                        // Tell the cell to change its state. If
+                        // the cell changed (the figureNextState request
+                        // returned false), then mark the current block as
+                        // unstable. Also, if the unstable cell is on the
+                        // edge of the block modify activeEdges to
+                        //  indicate which edge or edges changed.
+                        SurroundingCells updatedSurroundingCells = new SurroundingCellsBuilder()
+                                                                    .setNorthWest(neighborCells[0])
+                                                                    .setNorthEast(neighborCells[1])
+                                                                    .setNorth(neighborCells[2])
+                                                                    .setSouthWest(neighborCells[3])
+                                                                    .setSouthEast(neighborCells[4])
+                                                                    .setSouth(neighborCells[5])
+                                                                    .setWest(neighborCells[6])
+                                                                    .setEast(neighborCells[7])
+                                                                    .build();
+
+                        if (grid[row][column].figureNextState(updatedSurroundingCells, rule)) {
+                            nothingHappened = false;
+                        }
+                    }
             }
         }
 
